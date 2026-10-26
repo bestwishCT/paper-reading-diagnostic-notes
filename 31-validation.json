@@ -1,0 +1,140 @@
+{
+  "status": "ranges_valid",
+  "errors": [],
+  "semantic": "not_evaluated",
+  "excerpts": [
+    {
+      "decision": "D1",
+      "source_id": "A-P3",
+      "start_line": 4,
+      "end_line": 11,
+      "text": "We divide the corpusD into 100-word passages\nfollowing previous works on open-domain question\nanswering (Karpukhin et al., 2020; Petroni et al.,\n2021; Piktus et al., 2021), in contrast to commer-\ncial systems like Bing Chat, which cite entire Web\npages. We take 100-word passages because it is\neasier for humans to verify, and allows for more\nretrieved passages to fit in LLMs’ limited context."
+    },
+    {
+      "decision": "D1",
+      "source_id": "A-P5",
+      "start_line": 64,
+      "end_line": 76,
+      "text": "SUMM/SNIPPET . With a 4K context window, we\ncan at most safely fitk = 5 passages. As shown in\nFigure 4, top-5 retrieved passages can only cover\n56.8% percent of the answers in ASQA.\nTo tackle this limitation, we propose to provide\nsummaries or snippets of passages instead of the\nfull text (summaries are abstractive but snippets are\nspans from passages). We acquire summaries and\nsnippets by prompting ChatGPT with instructions\n(prompts in Table 25 and 26).10 Then we replace\nall passages with summaries/snippets. Summaries\nor snippets significantly reduce the passage length,\nallowing for more passages to fit in: for ASQA,"
+    },
+    {
+      "decision": "D1",
+      "source_id": "A-P5",
+      "start_line": 94,
+      "end_line": 95,
+      "text": "9We can fit at most k = 3 for models with 2K window\nand at most k = 5 for models with 4K context window."
+    },
+    {
+      "decision": "D1",
+      "source_id": "A-P2",
+      "start_line": 69,
+      "end_line": 71,
+      "text": "provement; (2) LLMs’ limited context window re-\nstricts the number of passages they can incorporate;\n(3) current LLMs struggle to synthesize multiple"
+    },
+    {
+      "decision": "D2",
+      "source_id": "A-P2",
+      "start_line": 1,
+      "end_line": 11,
+      "text": "Dataset Corpus (#passages) Question type Example\nASQA Wikipedia (21M) Factoid (ambiguous) Q: When did the US break away from England?\nA: The US declared independence on July 2, 1776 [1][2] ... The\nTreaty of Paris was later signed on September 3, 1783 [3].\nQAMPARI Wikipedia (21M) Factoid (list) Q: Which films have Gong Li as a member of their cast?\nA: The Story of Qiu Ju [1], Farewell My Concubine [2], The\nMonkey King 2 [3], Mulan [3], Saturday Fiction [3] ...\nELI5 Sphere (899M) Why/How/What Q: How do student loans affect getting a mortgage?\nA: Student loans can affect the debt to income ratio [1], which is\na key factor in determining the amount that ... [2][3]\nTable 1: The three datasets used in our ALCE benchmark. These datasets cover a wide range of question types and"
+    },
+    {
+      "decision": "D2",
+      "source_id": "A-P3",
+      "start_line": 26,
+      "end_line": 31,
+      "text": "use the 2018-12-20 Wikipedia snapshot asD.\nQAMPARI (Rubin et al., 2022) is a factoid QA\ndataset constructed from Wikipedia, where the an-\nswer is a list of entities that are drawn from differ-\nent passages. Same as ASQA, we use the 2018-12-\n20 Wikipedia as the corpus."
+    },
+    {
+      "decision": "D2",
+      "source_id": "A-P3",
+      "start_line": 32,
+      "end_line": 41,
+      "text": "ELI5 (Fan et al., 2019) is a long-form QA\ndataset built on the Reddit forum “Explain Like I’m\nFive”.6 Most ELI5 questions are how/why/what\nquestions that require long answers and multiple\npassages as evidence. Due to the diverse topics dis-\ncussed in the questions, we use Sphere (Piktus et al.,\n2021)—a filtered version of Common Crawl 7—as\nthe corpus. The ELI5 dataset is widely used in\nrelated work due to its challenging nature (Nakano\net al., 2021; Menick et al., 2022; Liu et al., 2023)."
+    },
+    {
+      "decision": "D2",
+      "source_id": "A-P5",
+      "start_line": 47,
+      "end_line": 51,
+      "text": "We explore simple, off-the-shelf retrievers. We use\ndense retrievers for Wikipedia, including GTR (Ni\net al., 2022) and DPR (Karpukhin et al., 2020);\nwe use BM25 for Sphere. For each question, we\nretrieve the top-100 passages."
+    },
+    {
+      "decision": "D2",
+      "source_id": "A-P3",
+      "start_line": 4,
+      "end_line": 11,
+      "text": "We divide the corpusD into 100-word passages\nfollowing previous works on open-domain question\nanswering (Karpukhin et al., 2020; Petroni et al.,\n2021; Piktus et al., 2021), in contrast to commer-\ncial systems like Bing Chat, which cite entire Web\npages. We take 100-word passages because it is\neasier for humans to verify, and allows for more\nretrieved passages to fit in LLMs’ limited context."
+    },
+    {
+      "decision": "D2",
+      "source_id": "A-P3",
+      "start_line": 49,
+      "end_line": 50,
+      "text": "7https://commoncrawl.org. We also filter out any Web\npages from Reddit."
+    },
+    {
+      "decision": "D2",
+      "source_id": "A-P5",
+      "start_line": 96,
+      "end_line": 97,
+      "text": "10We also query ChatGPT whether the passage is relevant\nto the question, and filter out passages that are “irrelevant”."
+    },
+    {
+      "decision": "D3",
+      "source_id": "A-P3",
+      "start_line": 42,
+      "end_line": 47,
+      "text": "We randomly select 1,000 examples from the\ndevelopment set of each dataset for ALCE. Our\nbenchmark primarily assesses the citation capabili-\nties of existing LLMs and does not provide training\ndata, as there are no available examples that pro-\nvide supervision for citations in these datasets."
+    },
+    {
+      "decision": "D3",
+      "source_id": "A-P14",
+      "start_line": 61,
+      "end_line": 65,
+      "text": "B Dataset Statistics\nFor ASQA, human answers have an average length\nof 65 words. For QAMPARI, each question has\non average 13 answers. For ELI5, human answers\nhave an average length of 131 words."
+    },
+    {
+      "decision": "D3",
+      "source_id": "A-P14",
+      "start_line": 87,
+      "end_line": 91,
+      "text": "Exact match for ASQA and QAMPARI. Both\nASQA and QAMPARI provide aliases for their\nshort answers. We normalize the response and the\nshort answers similarly to Rajpurkar et al. (2016)\nand report the score with the best-matching aliases."
+    },
+    {
+      "decision": "D3",
+      "source_id": "A-P3",
+      "start_line": 46,
+      "end_line": 47,
+      "text": "data, as there are no available examples that pro-\nvide supervision for citations in these datasets."
+    },
+    {
+      "decision": "D4",
+      "source_id": "A-P5",
+      "start_line": 17,
+      "end_line": 32,
+      "text": "response. We first define if a citation is “irrele-\nvant”. Intuitively, a citationci,jis “irrelevant” if (a)\nci,jitself cannot supportsi and (b) removingci,j\ndoes not affect the rest of the citations to support\nsi. Formally,ci,jis “irrelevant” if and only if\n(a) ϕ(ci,j,s i) = 0 , AND\n(b) ϕ(concat(Ci\\{ci,j}),s i) = 1 .\nci,j has a precision of 1 if si has recall =1 and\nci,j is not irrelevant. For example (Figure 3),\nwhen s3 cites three references [2][4][5] and\nrecall=1, [2] is “irrelevant” ifϕ([2],s 3) = 0 and\nϕ([4][5],s 3) = 1 . For condition (b) to work, we\nset recall =1 as a prerequisite for precision = 1 .\nNote that this algorithm overlooks the scenario\nwhen one citation partially supports the statement.\nWe discuss the details in §E."
+    },
+    {
+      "decision": "D4",
+      "source_id": "A-P2",
+      "start_line": 48,
+      "end_line": 50,
+      "text": "ple, on the ELI5 dataset, around 50% generations\nof our ChatGPT and GPT-4 baselines are not fully\nsupported by the cited passages. Additionally, we"
+    },
+    {
+      "decision": "D4",
+      "source_id": "A-P14",
+      "start_line": 49,
+      "end_line": 60,
+      "text": "NLI model accurately predicts the entailment\nof sub-claims. We further analyze our sub-claim\nevaluation metrics by checking the error rate of\nthe final prediction of the NLI model. To this end,\nwe first manually annotate the entailment scores\nbetween 40 outputs and their sub-claims (in total\nof 120 pairs; these are the same questions from the\nprevious analysis). We then use the NLI model\nto obtain the entailment scores for the output and\nsub-claims. Using the human annotations as the\nground truth label, we found that the NLI model\nachieved an accuracy of 80.0%."
+    },
+    {
+      "decision": "D4",
+      "source_id": "A-P2",
+      "start_line": 65,
+      "end_line": 74,
+      "text": "Our extensive analyses highlight three major\nchallenges of building LLMs to generate text with\ncitations: (1) the retrieval quality is crucial to the\nfinal performance and has substantial room for im-\nprovement; (2) LLMs’ limited context window re-\nstricts the number of passages they can incorporate;\n(3) current LLMs struggle to synthesize multiple\ndocuments in context without being distracted by\nirrelevant ones, although better instruction tuning\nbrings significant improvement. These challenges"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "prompt": "original",
+    "order": "relevance",
+    "role": "baseline",
+    "accuracy": null
+  },
+  {
+    "prompt": "original",
+    "order": "random",
+    "role": "not-isolated-here",
+    "accuracy": null
+  },
+  {
+    "prompt": "random-explicit",
+    "order": "relevance",
+    "role": "not-isolated-here",
+    "accuracy": null
+  },
+  {
+    "prompt": "random-explicit",
+    "order": "random",
+    "role": "reported-combination",
+    "accuracy": null
+  }
+]

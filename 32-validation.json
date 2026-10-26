@@ -1,0 +1,105 @@
+{
+  "status": "ranges_valid",
+  "errors": [],
+  "semantic": "not_evaluated",
+  "excerpts": [
+    {
+      "decision": "D1",
+      "source_id": "B-P3",
+      "start_line": 94,
+      "end_line": 98,
+      "text": "2Ambiguity in NaturalQuestions-Open means that a small\nnumber of distractor passages may contain a reasonable\nanswer. We additionally run experiments on subset of unam-\nbiguous questions, finding similar results and conclusions;\nsee Appendix A."
+    },
+    {
+      "decision": "D1",
+      "source_id": "B-P15",
+      "start_line": 1,
+      "end_line": 4,
+      "text": "Figure 12: Language model performance on a\nunambiguous subset of questions.\nA Ambiguity in Multi-Document QA\nDistractor Documents"
+    },
+    {
+      "decision": "D1",
+      "source_id": "B-P15",
+      "start_line": 19,
+      "end_line": 24,
+      "text": "We use the ambiguity annotations of Min\net al. (2020) to create a subset unambiguous ques-\ntions. Experiments on this unambiguous subset of\nthe data show similar results and conclusions as\nthe experiments on the full questions collection\n(Figure 12)."
+    },
+    {
+      "decision": "D2",
+      "source_id": "B-P3",
+      "start_line": 99,
+      "end_line": 100,
+      "text": "3We also explored using random documents as distractors,\nsee Appendix B for more details."
+    },
+    {
+      "decision": "D2",
+      "source_id": "B-P15",
+      "start_line": 25,
+      "end_line": 36,
+      "text": "B Random Distractors in\nMulti-Document QA\nWe also run multi-document question answering\nexperiments with random Wikipedia documents as\ndistractors, which allows us to ablate the impact of\nretrieved distractors (hard negatives). Note that in\nthis setting, the document containing the answer\ncan often be identified with simple heuristics (e.g.,\nFigure 13: Language model performance on\nmulti-document QA when using random distractors,\nrather than retrieved distractors.\nlexical overlap with the query). Figure 13 presents"
+    },
+    {
+      "decision": "D2",
+      "source_id": "B-P15",
+      "start_line": 37,
+      "end_line": 42,
+      "text": "the results of this experiment. Although all models\nhave higher absolute accuracy in this setting, they\nsurprisingly still struggle to reason over their entire\ninput context, indicating that their performance\ndegradation is not solely due to an inability to\nidentify relevant documents."
+    },
+    {
+      "decision": "D2",
+      "source_id": "B-P16",
+      "start_line": 1,
+      "end_line": 10,
+      "text": "Figure 14: Language model performance when ran-\ndomizing the order of the distractors (rather than\npresenting them in order of decreasing relevance) and\nmentioning as such in the prompt.\nmentioning such in the prompt, we see that ran-\ndomization slightly decreases performance when\nthe relevant information is at the very beginning\nof the context, and slightly increases performance\nwhen using information in the middle and end of\nthe context."
+    },
+    {
+      "decision": "D3",
+      "source_id": "B-P15",
+      "start_line": 43,
+      "end_line": 60,
+      "text": "C Randomizing Distractor Order in\nMulti-Document QA\nOur prompt instructs the language model to use\nthe provided search results to answer the ques-\ntion. There may be a prior in the pre-training or\ninstruction fine-tuning data to treat search results\nas sorted by decreasing relevance (i.e., the docu-\nments near the beginning of the input context are\nmore likely to be useful than those at the end).\nTo validate that our conclusions are not simply a\nbyproduct of this bias, we run experiments with\nthe modified instruction ‘‘Write a high-quality an-\nswer for the given question using only the provided\nsearch results (some of which might be irrelevant).\nThe search results are ordered randomly.’’ In ad-\ndition, we randomly shuffle the\nk −1 distractor\ndocuments."
+    },
+    {
+      "decision": "D3",
+      "source_id": "B-P15",
+      "start_line": 61,
+      "end_line": 67,
+      "text": "Figure 14 presents the results of this experiment.\nWe continue to see a U-shaped performance curve,\nwith performance degrading when language mod-\nels must use information in the middle of their\ninput contexts. Comparing the results in §2.3 with\nthose when randomizing the distractor order and\n171"
+    },
+    {
+      "decision": "D3",
+      "source_id": "B-P16",
+      "start_line": 1,
+      "end_line": 10,
+      "text": "Figure 14: Language model performance when ran-\ndomizing the order of the distractors (rather than\npresenting them in order of decreasing relevance) and\nmentioning as such in the prompt.\nmentioning such in the prompt, we see that ran-\ndomization slightly decreases performance when\nthe relevant information is at the very beginning\nof the context, and slightly increases performance\nwhen using information in the middle and end of\nthe context."
+    },
+    {
+      "decision": "D4",
+      "source_id": "B-P3",
+      "start_line": 5,
+      "end_line": 15,
+      "text": "•Even base language models (i.e., without\ninstruction fine-tuning) show a U-shaped per-\nformance curve as we vary the position of\nrelevant information in the input context.\nOur results indicate that prompting lan-\nguage models with longer input contexts is a\ntrade-off—providing the language model with\nmore information may help it perform the down-\nstream task, but it also increases the amount\nof content that the model must reason over,\npotentially decreasing accuracy. To better un-"
+    },
+    {
+      "decision": "D4",
+      "source_id": "B-P6",
+      "start_line": 4,
+      "end_line": 16,
+      "text": "are often much better at using relevant information\nthat occurs at the very beginning (primacy bias)\nand very end of contexts (recency bias), and suffer\ndegraded performance when forced to use infor-\nmation within the middle of its input context. For\nexample, GPT-3.5-Turbo’s multi-document QA\nperformance can drop by more than 20%—in the\nworst case, performance in 20- and 30-document\nsettings is lower than performance without any\ninput documents (i.e., closed-book performance;\n56.1%). These results indicate that current models\ncannot effectively reason over their entire context\nwindow when prompted for downstream tasks."
+    },
+    {
+      "decision": "D4",
+      "source_id": "B-P15",
+      "start_line": 21,
+      "end_line": 24,
+      "text": "tions. Experiments on this unambiguous subset of\nthe data show similar results and conclusions as\nthe experiments on the full questions collection\n(Figure 12)."
+    },
+    {
+      "decision": "D4",
+      "source_id": "B-P16",
+      "start_line": 15,
+      "end_line": 21,
+      "text": "GPT-4 achieves higher absolute performance than\nany other language model, but still shows a\nU-shaped performance curve—its performance is\nhighest when relevant information occurs at the\nvery start or end of the context, and performance\ndegrades when it must use information in the\nmiddle of its input context."
+    }
+  ]
+}

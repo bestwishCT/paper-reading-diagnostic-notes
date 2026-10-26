@@ -1,0 +1,124 @@
+{
+  "ok": true,
+  "data": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "annotations": [],
+          "content": "{\n  \"decisions\": [\n    {\n      \"id\": \"D1\",\n      \"answer\": \"证据映射：B-P3:94-98, B-P15:1-4, B-P15:19-24。\\n比较（表头/基准/目标/单位/脚注，跨页连读）：\\n- 表头：实验集合（全体 vs unambiguous 子集）\\n- 基准：在原始多文档QA上报告的性能趋势（见B-P3:94-98、B-P15:1-4）\\n- 目标：评估在去除歧义后，位置敏感性或总体结论是否改变\\n- 单位：相对性能变化（准确率百分比，文本中以“相似结果和结论”表述，参见B-P15:21-24）\\n- 脚注：我们仅使用文中给出的陈述，未见逐问题数值对比表（跨页证据来自B-P3与B-P15）。\\n答案：\\n- 原文（直接摘录/概括）：作者在B-P15:19-24说明使用Min等(2020)的歧义注释构造了一个“unambiguous”子集，且“在这个无歧义子集上的实验显示与完整问题集合相似的结果与结论”（B-P15:21-24）。B-P3:94-98也提到对无歧义子集做了额外实验并得到了相似结论（B-P3:94-98）。\\n- 教学推导：由文中陈述可推导出：去除那些因检索语料时间错配或可接受的替代答案导致的歧义，并不会消除模型的“位置敏感性”或改变主要结论；因此结论对数据集中的时间错配或少量歧义是稳健的（基于文中“相似结果和结论”的直接说法）。\\n- 因果解释（文内依据）：作者把“时间错配/歧义”作为一个可能的混淆因子（B-P15:9-18），通过构造无歧义子集并观察相似的结果，文中说明这种混淆并非导致主要观察（U 形位置依赖）的唯一或主要原因（B-P15:19-24；B-P3:94-98）。\\n- 适用边界：文中仅声明“相似结果和结论”，未给出该子集上的详细数值对比表或统计显著性检验（见限制）。因此不能从文中断言无歧义子集完全等同于原集合在所有模型/范例下的行为，只能说作者发现结论在该子集上仍成立。\\n限制：文中没有提供无歧义子集与全量集合的逐模型、逐位置的精确数值对比或显著性测试；因此关于“相似”的力度只能依据作者陈述，而非可检验的数值证据。\",\n      \"evidence\": [\n        {\n          \"source_id\": \"B-P3\",\n          \"start_line\": 94,\n          \"end_line\": 98\n        },\n        {\n          \"source_id\": \"B-P15\",\n          \"start_line\": 1,\n          \"end_line\": 4\n        },\n        {\n          \"source_id\": \"B-P15\",\n          \"start_line\": 19,\n          \"end_line\": 24\n        }\n      ],\n      \"limitations\": \"仅基于文中关于“unambiguous 子集”一句话的陈述；文中未给出该子集的逐位置、逐模型数值或统计显著性，故“相似”无法量化。\"\n    },\n    {\n      \"id\": \"D2\",\n      \"answer\": \"证据映射：B-P3:99-100, B-P15:25-36, B-P15:37-42, B-P16:1-10。\\n比较（表头/基准/目标/单位/脚注，跨页连读）：\\n- 表头：干扰文档类型（检索到的 hard negatives vs 随机 distractors）\\n- 基准：使用检索器返回的相关度排序作为干扰（hard negatives），文中原始多文档QA结果（参见B-P15:27-36）\\n- 目标：用随机维基文档作为干扰以消除检索器带来的“难负样本”效应（B-P3:99-100, B-P15:27-33）\\n- 单位：绝对准确率（百分比）和相对位置鲁棒性（性能随相关信息位置变化的形状，文中以“仍然有U形曲线/仍然难以在中间利用信息”描述，见B-P15:36-41, B-P16:6-10）\\n- 脚注：作者指出随机干扰通常提高绝对准确率但位置敏感性仍然存在（B-P15:37-42，B-P16:6-10）。跨页证据来自B-P3与B-P15/B-P16。\\n答案：\\n- 原文：作者在B-P15:27-36描述了用随机维基文档作为干扰的实验，并指出“虽然在这种设置下所有模型的绝对准确率更高，但它们仍然难以在整个上下文中推理，表明性能下降并非仅仅由于无法识别相关文档”（B-P15:37-42）。B-P3:99-100指向Appendix B以获取更多细节，B-P16:1-10（Figure 14 说明）进一步量化了随机化对不同位置的轻微影响（在开头略降，在中间和结尾略升）。\\n- 教学推导：将检索到的近似相关段落换为随机段落可以减少“hard negatives”（那些与查询有词汇重叠但不含答案的段落）带来的识别难度，从而提高总体绝对准确率；文中直接报告了这一效果（B-P15:37-42）。\\n- 因果解释（文内依据）：文中因果论断是：检索器提供的难负样本会降低绝对准确率，但即便消除该因素（用随机干扰），模型在“中间位置”仍然表现较差，说明位置依赖不是仅由 hard negatives 导致（B-P15:37-42, B-P16:5-10）。\\n- 适用边界：文中描述基于NaturalQuestions-Open和特定检索语料/模型；作者没有给出逐模型逐位置的完整数值表（仅描述总体趋势和Figure 13/14 的结论），因此细粒度结论（比如对某一模型在特定位置的精确变化）缺失。\\n限制：缺乏逐模型、逐位置的完整数值对比和统计检验；关于“提高多少”和“位置鲁棒性改善幅度”的具体量化在文中未完整给出，只能依据作者的趋势性陈述。\"\n      ,\n      \"evidence\": [\n        {\n          \"source_id\": \"B-P3\",\n          \"start_line\": 99,\n          \"end_line\": 100\n        },\n        {\n          \"source_id\": \"B-P15\",\n          \"start_line\": 25,\n          \"end_line\": 36\n        },\n        {\n          \"source_id\": \"B-P15\",\n          \"start_line\": 37,\n          \"end_line\": 42\n        },\n        {\n          \"source_id\": \"B-P16\",\n          \"start_line\": 1,\n          \"end_line\": 10\n        }\n      ],\n      \"limitations\": \"文中未提供随机与检索干扰在各位置上的逐模型数值细表；结论以趋势性陈述和图示为主，缺乏统计检验与精确量化。\"\n    },\n    {\n      \"id\": \"D3\",\n      \"answer\": \"证据映射：B-P15:43-60, B-P15:61-67, B-P16:1-10。\\n比较（表头/基准/目标/单位/脚注，跨页连读）：\\n- 表头：实验条件（原始提示+按相关度排序 vs 明确声明随机排序且打乱 distractor 顺序）\\n- 基准：按相关度排序且提示未声明（见§2.3 与 B-P15 对比引用）\\n- 目标：检验是否为排序先验导致位置敏感，故同时修改提示文本和 distractor 顺序\\n- 单位：准确率随相关信息位置的变化（百分比/曲线形状，参见B-P15:61-67与B-P16:1-10的U形描述）\\n- 脚注：作者在同一实验中既改变了提示（说明搜索结果是随机的）又随机打乱了文档顺序（B-P15:54-60），因此该实验不是单一变量消融；跨页证据见B-P15与B-P16。\\n答案：\\n- 原文：B-P15:43-60 描述了修改提示为“搜索结果已随机排序”并随机打乱 k−1 个 distractor 的做法；B-P15:61-67 与 B-P16:1-10 报告实验结果——依然观察到 U 形性能曲线，随机化在开头稍微降低性能，在中间和结尾略有提升（B-P16:5-10）。\\n- 教学推导：作者意图检验是否存在“把搜索结果当作按相关度排序”的先验（prompt / pretraining bias）。他们为此同时修改了指令（明示随机）和数据（打乱顺序），以消除模型从提示或预训练中假设排序的影响。\\n- 因果解释（文内依据）：由于两项干预（提示与顺序）是同时施加的，文中只能得出“即便在提示说明随机且顺序被打乱的条件下，U 形仍然存在”，从而削弱了“先验排序假设是唯一原因”的解释（B-P15:61-67）。但因两个变量同时改变，无法凭该实验单独判断提示偏好与文档位置哪一项为主因：这不是单变量消融实验（作者自己指出并设计为同时改变两项以验证偏好影响，见B-P15:43-60）。\\n- 适用边界：该实验证明了排序先验并非完整解释（因为即便随机仍有U形），但它不能分离出提示偏好与顺序效应的相对贡献；要做更精细的因果归因，需单独控制提示与顺序两个因素并报告逐项结果。\\n限制：作者并未在文中提供仅改变提示或仅改变顺序的单变量消融数值比较，因此文中证据不足以判断哪一项干预更关键或是否存在交互效应。\"\n      ,\n      \"evidence\": [\n        {\n          \"source_id\": \"B-P15\",\n          \"start_line\": 43,\n          \"end_line\": 60\n        },\n        {\n          \"source_id\": \"B-P15\",\n          \"start_line\": 61,\n          \"end_line\": 67\n        },\n        {\n          \"source_id\": \"B-P16\",\n          \"start_line\": 1,\n          \"end_line\": 10\n        }\n      ],\n      \"limitations\": \"实验中提示和顺序同时被修改，文中未给出仅修改其中一项的对照实验数据，因而无法从该实验独立推断单一成因或量化各自贡献。\"\n    },\n    {\n      \"id\": \"D4\",\n      \"answer\": \"证据映射：B-P3:5-15, B-P6:4-16, B-P15:21-24, B-P16:15-21。\\n比较（表头/基准/目标/单位/脚注，跨页连读）：\\n- 表头：三项检验（无歧义子集、随机干扰、随机化提示与顺序）对位置问题的证明力\\n- 基准：原始观察——多文档QA 中存在 U 形（首尾优于中间）位置敏感（B-P3:5-15, B-P6:4-16）\\n- 目标：判断三项检验是否能证明唯一成因或彻底解决位置问题\\n- 单位：结论强度（能否“证明唯一因果”/是否“彻底解决”），以文中结论与残留现象描述为依据\\n- 脚注：跨页证据来自B-P3/B-P6关于总体现象与B-P15/B-P16关于消融实验的结果。\\n答案：\\n- 原文要点：B-P3:5-15 总结了模型存在 U 形位置偏好并提出检验集合（Appendix A/B/C）以排查混淆；B-P6:4-16 给出具体例子（如 GPT-3.5-Turbo 在某些设置下性能降幅>20%，并引用闭卷基线56.1%），B-P15:21-24 与 B-P16:15-21 分别表明无歧义子集和更强模型（GPT-4）仍呈现相似的 U 形趋势（即残留问题）。\\n- 教学推导：三项检验分别针对不同潜在因子：Appendix A 去除语料歧义、Appendix B 去除检索难负样本、Appendix C 消除排序先验。每一项都能削弱对应的替代解释：A 说明时间错配/歧义不是主要原因（B-P15:21-24），B 说明 hard negatives 不是全部原因（B-P15:37-42），C 说明排序先验也不能完全解释（B-P15:61-67, B-P16:1-10）。\\n- 因果解释与证据界限：尽管三项检验分别削弱了不同替代解释，文中多处指出即便在这些条件下（无歧义、随机干扰、随机提示+顺序），U 形仍然存在（B-P15:21-24, B-P15:37-42, B-P15:61-67, B-P16:15-21）。因此，文中证据支持“多种候选解释都不足以单独解释位置问题”，但并不构成“证明唯一成因”或“彻底解决位置问题”的证据。要证明唯一性或彻底解决，需额外的单变量因果消融、量化效应大小和统计检验，这在文中未见。文中亦展示即便在更强模型上（GPT-4）问题仍存在，表明问题广泛且非由单一易修正因素造成（B-P16:15-21）。\\n- 适用边界：文中结论适用于作者所测试的数据集与模型系列（NaturalQuestions-Open、若干主流大模型），但不能推广为证明“位置问题在所有模型、所有语料或所有提示设计下均已解决”——文中没有提供能否通过某一具体干预彻底消除该问题的证据。\\n限制：缺乏能够证明单一因果关系的完全随机化单变量消融与定量统计结果；文中实验更多用于反驳单一替代解释而非建立确定的因果链条或提供彻底的解决方案。\",\n      \"evidence\": [\n        {\n          \"source_id\": \"B-P3\",\n          \"start_line\": 5,\n          \"end_line\": 15\n        },\n        {\n          \"source_id\": \"B-P6\",\n          \"start_line\": 4,\n          \"end_line\": 16\n        },\n        {\n          \"source_id\": \"B-P15\",\n          \"start_line\": 21,\n          \"end_line\": 24\n        },\n        {\n          \"source_id\": \"B-P16\",\n          \"start_line\": 15,\n          \"end_line\": 21\n        }\n      ],\n      \"limitations\": \"文中三项检验各自削弱了相应替代解释，但未提供能完成单一因果归因或证明彻底解决问题所需的逐变量消融、幅度量化和统计显著性检验。\"\n    }\n  ]\n}",
+          "provider_specific_fields": {
+            "refusal": null
+          },
+          "role": "assistant"
+        },
+        "provider_specific_fields": {
+          "content_filter_results": {
+            "hate": {
+              "filtered": false,
+              "severity": "safe"
+            },
+            "protected_material_code": {
+              "detected": false,
+              "filtered": false
+            },
+            "protected_material_text": {
+              "detected": false,
+              "filtered": false
+            },
+            "self_harm": {
+              "filtered": false,
+              "severity": "safe"
+            },
+            "sexual": {
+              "filtered": false,
+              "severity": "safe"
+            },
+            "violence": {
+              "filtered": false,
+              "severity": "safe"
+            }
+          }
+        }
+      }
+    ],
+    "created": 1793003072,
+    "id": "chatcmpl-EdAIKjt6fHhkMa9h1qIKlFpf5RmvM",
+    "model": "chenkun/gpt-5-mini",
+    "object": "chat.completion",
+    "prompt_filter_results": [
+      {
+        "content_filter_results": {
+          "hate": {
+            "filtered": false,
+            "severity": "safe"
+          },
+          "jailbreak": {
+            "detected": false,
+            "filtered": false
+          },
+          "self_harm": {
+            "filtered": false,
+            "severity": "safe"
+          },
+          "sexual": {
+            "filtered": false,
+            "severity": "safe"
+          },
+          "violence": {
+            "filtered": false,
+            "severity": "safe"
+          }
+        },
+        "prompt_index": 0
+      }
+    ],
+    "routing": {
+      "serving_pipereplica": "d20261024072159-13605de2-default-r1-dp0-default"
+    },
+    "service_tier": "default",
+    "usage": {
+      "completion_tokens": 5288,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 1536,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 7,
+        "engine_ttft_ms": 108,
+        "engine_ttlt_ms": 38544,
+        "pre_inference_ms": 93,
+        "service_tbt_ms": 7,
+        "service_ttft_ms": 1570,
+        "service_ttlt_ms": 40002,
+        "user_visible_ttft_ms": 1477
+      },
+      "prompt_tokens": 3783,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 9071
+    }
+  },
+  "notice": {
+    "billing": {
+      "balance": {
+        "redacted": "private account balance"
+      },
+      "sufficient": false
+    }
+  },
+  "meta": {
+    "request_id": "cdbbb80b-566b-4745-9b1c-73357b8a71ea",
+    "cli_version": "2.8.1",
+    "cli_commit": "a735f03d78b958fa7836e9a9caf4c65a044e1e88",
+    "cli_modified": false,
+    "command": "bohr chat",
+    "duration_ms": 42019,
+    "timestamp": 1793003113
+  }
+}

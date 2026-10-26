@@ -1,0 +1,10 @@
+{
+  "valid_config": true,
+  "wrong_unit_and_corpus": false,
+  "gold_metadata": {
+    "passage_unit": "words",
+    "context_unit": "tokens",
+    "ELI5_corpus": "Sphere",
+    "eval_per_dataset": 1000
+  }
+}

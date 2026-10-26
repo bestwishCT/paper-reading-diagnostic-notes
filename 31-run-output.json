@@ -1,0 +1,51 @@
+{
+  "decisions": [
+    {
+      "id": "D1",
+      "evidence": [
+        {"source_id": "A-P3", "start_line": 4, "end_line": 11},
+        {"source_id": "A-P5", "start_line": 64, "end_line": 76},
+        {"source_id": "A-P5", "start_line": 94, "end_line": 95},
+        {"source_id": "A-P2", "start_line": 69, "end_line": 71}
+      ],
+      "answer": "证据映射（先列证据再答）：\n- A-P3:4-11 描述将语料分割为100-word passages，并对比商业系统引用整页网页的做法，给出选择理由（便于人工核验、能容纳更多检索段以适配有限上下文）。\n- A-P5:64-76 说明为应对上下文窗口限制采用 summaries/snippets 可增加可放入的段落但有信息丢失（lossy）。\n- A-P5:94-95 与 A-P2:69-71 说明上下文窗口大小（2K/4K）限制可放入的 k 值，从而限制能合并的证据数量。\n比较表（表头/基准/目标/单位/脚注）：\n表头: 抽样粒度对检索与核验的影响\n基准: 整网页（whole webpage） | 目标: 100-word passages\n单位: 可供核验的“可独立验证信息块”数 / LLM 上下文窗口内的段落数\n说明脚注: 基准表示商业系统常引用整页；目标为作者在本文采用的单位（见 A-P3:4-11）。\n对比要点：\n1) 可人工核验性（单位：易核验度）— 目标优于基准（A-P3:4-11: \"easier for humans to verify\"）。\n2) 可放入上下文的证据量（单位：段落数/窗口）— 目标优于基准（短段落允许在同一上下文中放入更多段落；见 A-P3:9-11 与 A-P5:94-95）。\n3) 语义连贯与上下文完整性（单位：信息完整度）— 基准优于目标（整页保留跨段落上下文，短段可能丢失分散信息，A-P5:64-76 指出 summaries/snippets 的“lossy”问题）。\n作者的两点取舍（原文与推论区分）：\n- 原文陈述（直接引自文中）：(a) 采用100-word passages 而非整页，理由是便于人工核验并能在有限上下文中放入更多段落（A-P3:4-11）；(b) 上下文窗口限制是关键问题，限制了能合入的段落数（A-P2:69-71；A-P5:94-95）。\n- 教学推导/因果解释（我的推论）：因此作者在设计上牺牲了段落间的天然上下文完整性以换取可核验性与更高的证据覆盖数；为弥补信息丢失，采用 summaries/snippets 或交互式检索，但这些又带来“lossy”与复杂度增加（A-P5:64-76）。\n适用边界：该比较基于本文提出的设计权衡（100-word passages 与 LLM 上下文窗口限制）；若使用更大上下文模型或能引用整页并提供高效人工核验工具，则该权衡可能改变（文中未提供大窗口实测数据）。",
+      "limitations": "仅使用文中给出的段落：没有外部实测数据来量化“易核验度”或整页与短段在不同检索器/主题上的实际覆盖差异；关于整页丢失/获益的结论为作者陈述与基于该陈述的合理推论。"
+    },
+    {
+      "id": "D2",
+      "evidence": [
+        {"source_id": "A-P2", "start_line": 1, "end_line": 11},
+        {"source_id": "A-P3", "start_line": 26, "end_line": 31},
+        {"source_id": "A-P3", "start_line": 32, "end_line": 41},
+        {"source_id": "A-P5", "start_line": 47, "end_line": 51},
+        {"source_id": "A-P3", "start_line": 4, "end_line": 11},
+        {"source_id": "A-P3", "start_line": 49, "end_line": 50},
+        {"source_id": "A-P5", "start_line": 96, "end_line": 97}
+      ],
+      "answer": "证据映射（先列证据再答）：\n- A-P2:1-11 列出三数据集（ASQA, QAMPARI, ELI5）及其典型示例。 \n- A-P3:26-31 指明 ASQA 与 QAMPARI 使用 2018-12-20 的 Wikipedia 快照作为语料。 \n- A-P3:32-41 指明 ELI5 使用 Sphere（过滤后的 Common Crawl）作为语料，且主题多样。 \n- A-P5:47-51 说明检索器选择：Wikipedia 用密集检索（GTR/DPR），Sphere 用 BM25，并检索 top-100。 \n- A-P3:4-11 说明语料被切分为 100-word passages（不是整页）。\n- A-P3:49-50 与 A-P5:96-97 涉及过滤（过滤出 Reddit 页面，且在 SUMM/SNIPPET 流程中用 ChatGPT 判 relevancy 并去除“irrelevant”页面）。\n按照 ASQA / QAMPARI / ELI5 三类分别列出任务形态、检索语料与过滤/筛选要求：\n1) ASQA\n- 任务形态（Task form）：长文本 factoid（ambiguous question 需多短答案并有 long-form 汇总），要求覆盖多方面（A-P3:19-24）。\n- 检索语料（Retrieval corpus）：2018-12-20 Wikipedia snapshot（A-P3:25-31）。\n- 过滤/要求（Filtering）：语料预切分为 100-word passages（便于验证，A-P3:4-11）；检索器对 Wikipedia 使用密集检索器（GTR/DPR，A-P5:47-51）；算法上可能进一步筛除与问题不相关的段落（文中提出在 SUMM/SNIPPET 阶段用模型判 relevancy，A-P5:96-97）。\n2) QAMPARI\n- 任务形态：factoid (list) — 答案为实体列表，评测强调精确匹配与 recall/precision（见 A-P2:5-7 与 A-P3:92-99）。\n- 检索语料：2018-12-20 Wikipedia（A-P3:27-31）。\n- 过滤/要求：同样使用 100-word passages（A-P3:4-11）；对 Wikipedia 使用密集检索（A-P5:47-51）；评测时需精确匹配实体别名并按规则处理（A-P14:87-91）。\n3) ELI5\n- 任务形态：长文本 Why/How/What（需要解释性、综合性长答案，A-P2:8-10; A-P3:32-36）。\n- 检索语料：Sphere（过滤后的 Common Crawl），明确不是 Wikipedia（A-P3:37-39）。\n- 过滤/要求：对 Sphere 使用 BM25（A-P5:47-51）；文中也指出会过滤 Reddit 页面（A-P3:49-50）；在 SUMM/SNIPPET 流程中用模型判断并去除“不相关”页面（A-P5:96-97）。\n备注（遵守题目要求）：本文没有将 2018 Wikipedia 指派给 ELI5（原文明确区分 ELI5 使用 Sphere，见 A-P3:32-39）。",
+      "limitations": "仅基于文中直接陈述：未给出更细粒度的过滤规则（例如去噪阈值、BM25 参数等）或各数据集在原始发布处的训练/验证/测试集具体划分；关于别名正规化与评测细节部分依赖作者对评测方式的描述。"
+    },
+    {
+      "id": "D3",
+      "evidence": [
+        {"source_id": "A-P3", "start_line": 42, "end_line": 47},
+        {"source_id": "A-P14", "start_line": 61, "end_line": 65},
+        {"source_id": "A-P14", "start_line": 87, "end_line": 91},
+        {"source_id": "A-P3", "start_line": 46, "end_line": 47}
+      ],
+      "answer": "证据映射：\n- A-P3:42-47 明确：作者从每个数据集的 development set 随机抽取 1,000 个示例作为 ALCE 的评测样本，并指出基准不提供训练数据（\"does not provide training data\"）。\n- A-P14:61-65 给出数据集的统计：ASQA 人类答案平均 65 字；QAMPARI 平均每题约 13 个答案；ELI5 人类答案平均 131 字。\n- A-P14:87-91 说明 ASQA/QAMPARI 在评测时提供别名并进行正规化以计算 exact match。\n按要求核对并区分“1,000题”与“训练集规模”：\n1) 抽样数量（评测样本）：ALCE 从每个数据集的 dev set 随机抽取 1,000 个例子（A-P3:42-43）。这是评测时使用的样本数（即“1000题”）。\n2) 训练数据提供情况：文中明确写到 ALCE 基准“不提供训练数据”（A-P3:45-47），理由是没有可用的、带引证(supervision for citations)的示例；因此在本工作里没有提供训练集给参与系统。\n3) 平均答案长度/数量：ASQA 人类答案平均 65 words（A-P14:61-62）；QAMPARI 平均每题 13 个答案（A-P14:63）；ELI5 人类答案平均 131 words（A-P14:64-65）。\n关于训练集规模（原始数据集的训练集大小）：文中未提供这些数据集各自完整训练集的规模信息（缺证据）。因此不能在本文内断言原始训练集规模（此为信息缺失）。",
+      "limitations": "结论仅限于文中明确陈述：ALCE 的评测样本为每集 1,000 个开发集例子且不提供训练数据；但原始数据集（ASQA/QAMPARI/ELI5）各自的训练集规模未在所给文本中出现，故对训练集规模的核对为不可得信息。"
+    },
+    {
+      "id": "D4",
+      "evidence": [
+        {"source_id": "A-P5", "start_line": 17, "end_line": 32},
+        {"source_id": "A-P2", "start_line": 48, "end_line": 50},
+        {"source_id": "A-P14", "start_line": 49, "end_line": 60},
+        {"source_id": "A-P2", "start_line": 65, "end_line": 74}
+      ],
+      "answer": "证据映射（要点与原文出处）：\n- A-P5:17-32 定义何为“irrelevant” citation，并指出算法忽略“部分支持”场景（\"overlooks the scenario when one citation partially supports the statement\"）。\n- A-P2:48-50 报告：在 ELI5 上，约 50% 的 ChatGPT/GPT-4 生成结果并未被所引用段落完全支持（说明仅有来源级支持并不能保证回答完全被证据覆盖）。\n- A-P14:49-60 关于子断言(sub-claims)的自动生成和 NLI 判定：自动生成的子断言经人工检查有 93.33% 合格，而用于判定的 NLI 模型对这些断言的蕴含判定准确率约为 80%（说明自动判据本身有误判率）。\n- A-P2:65-74 指出三大挑战：检索质量、有限上下文窗口、模型难以在多文档中合成事实（这些因素共同导致来源级支持未必覆盖全部问题或反映实时真值）。\n论述（区分原文、教学推导、因果解释、适用边界）：\n- 原文事实（直接摘自文中）：(1) 文中以形式化定义了“irrelevant”引用并承认算法忽视部分支持情形（A-P5:17-32）；(2) 实验显示在 ELI5 上约有 50% 的生成不被所引段落完全支持（A-P2:48-50）；(3) NLI 判定并非完美，示例准确率约 80%（A-P14:49-60）。\n- 教学推导 / 因果解释（我的推论基于原文）：(a) 即便每个声明都带有“来源级支持”，若检索未覆盖某些关键信息或引用只部分支持声明（A-P5:30-32），帮不了“全问题覆盖”；(b) 自动化的证据蕴含判定（NLI）有误差（A-P14:49-60），会导致“来源被标为支持”并不等于人类判断的真值；(c) 检索质量与上下文窗口限制直接影响能否检索并合并足够的证据，从而影响覆盖率与实时性（A-P2:65-74）。\n- 适用边界：上述结论只基于文中所述方法与评测（检索 top-k、100-word passages、使用 NLI 判定等）。若换用更高精度的检索器、更大上下文窗口、更强的蕴含判定模型或人工复核，来源级支持的可靠性和覆盖性可能提升——但这些条件不在本文所给证据范围内。\n总结句（要点）：文中明确承认并给出原因（检索不足、片段化、NLI/判断误差），因此“仅有来源级支持”既不能保证覆盖全部问题，也不能保证其与实时世界真值一致（原文支持，并据此做出因果解释）。",
+      "limitations": "结论仅基于文中实验与方法描述；关于“实时世界真值”的判断需要外部事实核验与时间戳信息，所给文本未包含实时验证手段或更大范围的 NLI/检索误差率统计。"
+    }
+  ]
+}

@@ -1,0 +1,292 @@
+SOURCE B-P3 physical PDF page 3
+1: key-value pairs) enables near-perfect perfor-
+2: mance on the synthetic key-value task, but
+3: minimally changes trends in multi-document
+4: QA (§4.2).
+5: •Even base language models (i.e., without
+6: instruction fine-tuning) show a U-shaped per-
+7: formance curve as we vary the position of
+8: relevant information in the input context.
+9: Our results indicate that prompting lan-
+10: guage models with longer input contexts is a
+11: trade-off—providing the language model with
+12: more information may help it perform the down-
+13: stream task, but it also increases the amount
+14: of content that the model must reason over,
+15: potentially decreasing accuracy. To better un-
+16: derstand this trade-off in practice, we perform
+17: a case study with retriever-reader models on
+18: open-domain question answering ( §5). In con-
+19: trast to our controlled multi-document QA task,
+20: where the context always contains exactly one
+21: document that answers the question, none or
+22: many of the top k documents may contain the
+23: answer in the open-domain QA setting. When
+24: retrieving from Wikipedia to answer queries
+25: from NaturalQuestions-Open, we find that model
+26: performance saturates long before retriever re-
+27: call saturates, indicating that current models
+28: fail to effectively use additional retrieved doc-
+29: uments—using 50 documents instead of 20
+30: retrieved documents only marginally improves
+31: performance ( ∼1.5% for GPT-3.5-Turbo and
+32: ∼1% for claude-1.3).
+33: Our analysis provides a better understanding
+34: of how language models use their input context
+35: and introduces new evaluation protocols for fu-
+36: ture long-context models; to claim that a language
+37: model can robustly use information within long
+38: input contexts, it is necessary to show that its
+39: performance is minimally affected by the position
+40: of the relevant information in the input context
+41: (e.g., minimal difference in best- and worst-case
+42: performance). To facilitate further work on un-
+43: derstanding and improving how language models
+44: use their input context, we release our code and
+45: evaluation data.
+46: 1
+47: 2 Multi-Document Question Answering
+48: Our goal is to better understand how language
+49: models use their input context. To this end, we
+50: 1nelsonliu.me/papers/lost-in-the-middle.
+51: analyze model performance on multi-document
+52: question answering, which requires models to find
+53: relevant information within an input context and
+54: use it to answer the question. In particular, we
+55: make controlled changes to the length of the input
+56: context and the position of the relevant informa-
+57: tion and measure changes in task performance.
+58: 2.1 Experimental Setup
+59: In the multi-document question answering task,
+60: the model inputs are (i) a question to answer and
+61: (ii) k documents (e.g., passages from Wikipedia),
+62: where exactly one of the documents contains the
+63: answer to the question and k −1 ‘‘distractor’’
+64: documents do not. This task requires the model
+65: to access the document that contains the answer
+66: within its input context and use it to answer the
+67: question. Figure 2 presents an example.
+68: We instantiate this task with data from
+69: NaturalQuestions-Open (Lee et al., 2019;
+70: Kwiatkowski et al., 2019), which contains
+71: historical queries issued to the Google search
+72: engine, coupled with human-annotated answers
+73: extracted from Wikipedia. In particular, we take
+74: the 2655 queries where the annotated long answer
+75: is a paragraph (as opposed to a list or a table).
+76: We use passages (chunks of at most 100 tokens)
+77: from Wikipedia as documents within our input
+78: contexts. For each of the queries, we need a
+79: document that contains the answer and
+80: k −1
+81: distractor documents that do not contain the
+82: answer. To obtain a document that answers the
+83: question, we use the Wikipedia paragraph that
+84: contains the answer from the NaturalQuestions
+85: annotations.
+86: To collect k −1 distractor documents that do
+87: not contain the answer, we use a retrieval system
+88: (Contriever, fine-tuned on MS-MARCO; Izacard
+89: et al., 2021) to retrieve the k−1 Wikipedia chunks
+90: that are most relevant to the query and do not
+91: contain any of the NaturalQuestions-annotated
+92: answers.
+93: 2,3 In the input context, the distractor
+94: 2Ambiguity in NaturalQuestions-Open means that a small
+95: number of distractor passages may contain a reasonable
+96: answer. We additionally run experiments on subset of unam-
+97: biguous questions, finding similar results and conclusions;
+98: see Appendix A.
+99: 3We also explored using random documents as distractors,
+100: see Appendix B for more details.
+101: 159
+
+SOURCE B-P6 physical PDF page 6
+1: Figure 6: Example of the key-value retrieval task, with an input context and the desired model output. Given a
+2: key, the goal is to return the associated value. All keys and values are 128-bit UUIDs. The relevant key-value pair
+3: for answering the query is bolded here within the input context for clarity.
+4: are often much better at using relevant information
+5: that occurs at the very beginning (primacy bias)
+6: and very end of contexts (recency bias), and suffer
+7: degraded performance when forced to use infor-
+8: mation within the middle of its input context. For
+9: example, GPT-3.5-Turbo’s multi-document QA
+10: performance can drop by more than 20%—in the
+11: worst case, performance in 20- and 30-document
+12: settings is lower than performance without any
+13: input documents (i.e., closed-book performance;
+14: 56.1%). These results indicate that current models
+15: cannot effectively reason over their entire context
+16: window when prompted for downstream tasks.
+17: Extended-context models are not necessarily
+18: better at using input context. When the input
+19: context fits in the context window of both a model
+20: and its extended-context counterpart, we see that
+21: performance between them is nearly identical. For
+22: example, the 10- and 20-document settings both
+23: fit in the context window of GPT-3.5-Turbo and
+24: GPT-3.5-Turbo (16K), and we observe that their
+25: performance as a function of position of relative
+26: information is nearly superimposed (solid purple
+27: and dashed brown series in Figure 5). These re-
+28: sults indicate that extended-context models are
+29: not necessarily better than their non-extended
+30: counterparts at using their input context.
+31: 3 How Well Can Language Models
+32: Retrieve From Input Contexts?
+33: Given that language models struggle to retrieve
+34: and use information from the middle of their input
+35: contexts in the multi-document question answer-
+36: ing task, to what extent can they simply retrieve
+37: from input contexts? We study this question with
+38: a synthetic key-value retrieval task, which is de-
+39: signed to provide a minimal testbed for the basic
+40: ability to retrieve matching tokens from an input
+41: context.
+42: 3.1 Experimental Setup
+43: In our synthetic key-value retrieval task, the inputs
+44: are (i) a string-serialized JSON object with k
+45: key-value pairs, where each of the keys and values
+46: are unique, randomly generated UUIDs and (ii) a
+47: key within the aforementioned JSON object. The
+48: goal is to return the value associated with the
+49: specified key. Thus, each JSON object contains
+50: one relevant key-value pair (where the value is
+51: to be returned), and
+52: k −1 irrelevant ‘‘distractor’’
+53: key-value pairs. Figure 6 provides an example
+54: input context and its corresponding desired output.
+55: We again measure accuracy by evaluating whether
+56: the correct value appears in the predicted output.
+57: Our synthetic key-value retrieval task shares
+58: similar goals with the Little Retrieval Test of
+59: Papailiopoulos et al. (2023) and the fine-grained
+60: line retrieval task of Li et al. (2023), but we ex-
+61: plicitly seek to distill and simplify the task by
+62: removing as much natural language semantics as
+63: possible (using random UUIDs instead), since lan-
+64: guage features may present potential confounders.
+65: For example, Transformer language models may
+66: have varying sensitivity to different linguistic
+67: features in their input (O’Connor and Andreas,
+68: 2021).
+69: 162
+
+SOURCE B-P15 physical PDF page 15
+1: Figure 12: Language model performance on a
+2: unambiguous subset of questions.
+3: A Ambiguity in Multi-Document QA
+4: Distractor Documents
+5: Following past work on NaturalQuestions-Open
+6: (Izacard et al., 2021; Izacard and Grave, 2021, in-
+7: ter alia), we use a Wikipedia dump from late 2018
+8: as our retrieval corpus. However, this standard
+9: Wikipedia dump has a small amount of temporal
+10: mismatch with the NaturalQuestions annotations.
+11: For example, consider the question ‘‘what nfl
+12: team does robert griffin iii play for’’. The Natural-
+13: Questions annotated answer is ‘‘currently a free
+14: agent’’. However, the Wikipedia retrieval corpus
+15: contains the information that he plays for the ‘‘Bal-
+16: timore Ravens’’, since he was released from the
+17: team between the Wikipedia dump’s timestamp
+18: and the NaturalQuestions annotation process.
+19: We use the ambiguity annotations of Min
+20: et al. (2020) to create a subset unambiguous ques-
+21: tions. Experiments on this unambiguous subset of
+22: the data show similar results and conclusions as
+23: the experiments on the full questions collection
+24: (Figure 12).
+25: B Random Distractors in
+26: Multi-Document QA
+27: We also run multi-document question answering
+28: experiments with random Wikipedia documents as
+29: distractors, which allows us to ablate the impact of
+30: retrieved distractors (hard negatives). Note that in
+31: this setting, the document containing the answer
+32: can often be identified with simple heuristics (e.g.,
+33: Figure 13: Language model performance on
+34: multi-document QA when using random distractors,
+35: rather than retrieved distractors.
+36: lexical overlap with the query). Figure 13 presents
+37: the results of this experiment. Although all models
+38: have higher absolute accuracy in this setting, they
+39: surprisingly still struggle to reason over their entire
+40: input context, indicating that their performance
+41: degradation is not solely due to an inability to
+42: identify relevant documents.
+43: C Randomizing Distractor Order in
+44: Multi-Document QA
+45: Our prompt instructs the language model to use
+46: the provided search results to answer the ques-
+47: tion. There may be a prior in the pre-training or
+48: instruction fine-tuning data to treat search results
+49: as sorted by decreasing relevance (i.e., the docu-
+50: ments near the beginning of the input context are
+51: more likely to be useful than those at the end).
+52: To validate that our conclusions are not simply a
+53: byproduct of this bias, we run experiments with
+54: the modified instruction ‘‘Write a high-quality an-
+55: swer for the given question using only the provided
+56: search results (some of which might be irrelevant).
+57: The search results are ordered randomly.’’ In ad-
+58: dition, we randomly shuffle the
+59: k −1 distractor
+60: documents.
+61: Figure 14 presents the results of this experiment.
+62: We continue to see a U-shaped performance curve,
+63: with performance degrading when language mod-
+64: els must use information in the middle of their
+65: input contexts. Comparing the results in §2.3 with
+66: those when randomizing the distractor order and
+67: 171
+
+SOURCE B-P16 physical PDF page 16
+1: Figure 14: Language model performance when ran-
+2: domizing the order of the distractors (rather than
+3: presenting them in order of decreasing relevance) and
+4: mentioning as such in the prompt.
+5: mentioning such in the prompt, we see that ran-
+6: domization slightly decreases performance when
+7: the relevant information is at the very beginning
+8: of the context, and slightly increases performance
+9: when using information in the middle and end of
+10: the context.
+11: D GPT-4 Performance
+12: We evaluate GPT-4 (8K) on a subset of 500 ran-
+13: dom multi-document QA examples with 20 to-
+14: tal documents in each input context (Figure 15).
+15: GPT-4 achieves higher absolute performance than
+16: any other language model, but still shows a
+17: U-shaped performance curve—its performance is
+18: highest when relevant information occurs at the
+19: very start or end of the context, and performance
+20: degrades when it must use information in the
+21: middle of its input context.
+22: E Llama-2 Performance
+23: We evaluate Llama-2 (Touvron et al., 2023b)
+24: on multi-document QA with 20 total documents
+25: in each input context. The Llama tokenizer pro-
+26: duces longer sequences than the tokenizers for
+27: our previously-studied models, so we discard 20
+28: examples (out of 2655) that exceed Llama-2’s
+29: maximum context length of 4096 tokens. We ex-
+30: periment with models of varying sizes (7B, 13B,
+31: and 70B parameters), with and without additional
+32: Figure 15: Although GPT-4 has higher absolute perfor-
+33: mance than other models, its performance still degrades
+34: when relevant information occurs in the middle of the
+35: input context.
+36: Figure 16: Multi-document QA performance (20 total
+37: documents) of Llama-2 models of varying sizes (7B,
+38: 13B, 70B parameters), with and without additional
+39: supervised fine-tuning and reinforcement learning
+40: from human feedback (‘‘-chat-’’ models).
+41: supervised fine-tuning and reinforcement learning
+42: from human feedback (‘‘-chat-’’ models). The
+43: results are presented in Figure 16.
+44: Comparing Llama-2 models of varying sizes,
+45: we find that only the larger models (13B and
+46: 70B) exhibit the U-shaped performance curve
+47: (i.e., both primacy and recency bias)—the smallest
+48: 172
