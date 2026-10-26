@@ -1,0 +1,77 @@
+{
+  "status": "ranges_valid",
+  "errors": [],
+  "semantic": "not_evaluated",
+  "excerpts": [
+    {
+      "decision": "D1",
+      "source_id": "A-P16",
+      "start_line": 68,
+      "end_line": 73,
+      "text": "citation annotation, we first train a T5-base FiD\nmodel for 5 epochs on the ASQA training set with\na batch size of 64 and a learning rate of 1e-4. Dur-\ning evaluation, we use POST CITE to add citations\nto the output. We also usek = 5 passages during\nboth training and evaluation of the FiD model."
+    },
+    {
+      "decision": "D1",
+      "source_id": "A-P16",
+      "start_line": 80,
+      "end_line": 82,
+      "text": "FiD baseline still significantly lags behind prompt-\ning ChatGPT in both correctness and citation qual-\nity (even though it is trained on 4000+ examples)."
+    },
+    {
+      "decision": "D2",
+      "source_id": "A-P17",
+      "start_line": 10,
+      "end_line": 13,
+      "text": "ChatGPT 66.6 40.4 73.6 72.5\nFiD + POSTCITE 75.8 28.4 58.1 58.0\nTable 17: Comparison of Fusion-in-Decoder with Chat-\nGPT on ASQA. Both models use top-5 GTR passages."
+    },
+    {
+      "decision": "D2",
+      "source_id": "A-P17",
+      "start_line": 41,
+      "end_line": 46,
+      "text": "Fluency Correct. Citation\n(MAUVE) (Claim) Rec. Prec.\nChatGPT 57.2 12.0 51.1 50.0\nFiD + POSTCITE 25.2 4.4 39.3 39.3\nTable 18: Comparison of Fusion-in-Decoder with Chat-\nGPT on ELI5. Both models use top-5 GTR passages."
+    },
+    {
+      "decision": "D2",
+      "source_id": "A-P16",
+      "start_line": 71,
+      "end_line": 73,
+      "text": "ing evaluation, we use POST CITE to add citations\nto the output. We also usek = 5 passages during\nboth training and evaluation of the FiD model."
+    },
+    {
+      "decision": "D3",
+      "source_id": "A-P16",
+      "start_line": 75,
+      "end_line": 82,
+      "text": "(in-domain) and ELI5 (out-of-domain), and the re-\nsults can be found in Tables 17 and 18. Note that\nthis is not a direct comparison, as ALCE assumes\nonly evaluation data available and uses only few-\nshot data for prompting. As the results show, the\nFiD baseline still significantly lags behind prompt-\ning ChatGPT in both correctness and citation qual-\nity (even though it is trained on 4000+ examples)."
+    },
+    {
+      "decision": "D3",
+      "source_id": "A-P6",
+      "start_line": 39,
+      "end_line": 46,
+      "text": "We describe experiment details in §C. We use Chat-\nGPT (gpt-3.5-turbo-0301) with a 4K context\nwindow for most main experiments and ablations.\nWe also report results with ChatGPT-16K ( gpt-\n3.5-turbo-16k-0613) and GPT-4 (gpt-4-0613;\n8K context window). For open-source models,\nwe test LLaMA (Touvron et al., 2023a) and its\ninstruction-tuned versions, including Alpaca (Taori"
+    },
+    {
+      "decision": "D4",
+      "source_id": "A-P16",
+      "start_line": 80,
+      "end_line": 86,
+      "text": "FiD baseline still significantly lags behind prompt-\ning ChatGPT in both correctness and citation qual-\nity (even though it is trained on 4000+ examples).\nWhen tested on another dataset (ELI5), FiD per-\nforms even worse, showing that it is challenging\nto solve the problem by fine-tuning a small pre-\ntrained model."
+    },
+    {
+      "decision": "D4",
+      "source_id": "A-P17",
+      "start_line": 44,
+      "end_line": 46,
+      "text": "FiD + POSTCITE 25.2 4.4 39.3 39.3\nTable 18: Comparison of Fusion-in-Decoder with Chat-\nGPT on ELI5. Both models use top-5 GTR passages."
+    },
+    {
+      "decision": "D4",
+      "source_id": "A-P16",
+      "start_line": 75,
+      "end_line": 82,
+      "text": "(in-domain) and ELI5 (out-of-domain), and the re-\nsults can be found in Tables 17 and 18. Note that\nthis is not a direct comparison, as ALCE assumes\nonly evaluation data available and uses only few-\nshot data for prompting. As the results show, the\nFiD baseline still significantly lags behind prompt-\ning ChatGPT in both correctness and citation qual-\nity (even though it is trained on 4000+ examples)."
+    }
+  ]
+}

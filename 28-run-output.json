@@ -1,0 +1,107 @@
+{
+  "decisions": [
+    {
+      "id": "D1",
+      "answer": "证据映射: 用到的原文段落见 evidence 字段。原文摘录: CLOSED BOOK 在生成阶段只接到 instruction+question，不附带检索到的 passages（A-P6:22-26）；POST CITE 在后处理阶段对每个 statement 在检索到的 top-100 passages 中用 GTR 找最佳匹配并加上引用（A-P6:34-37）；检索池来自检索器（GTR/DPR/BM25），每题检索 top-100（A-P5:47-51）；INLINE SEARCH/INTERACT 等机制也是在 top-100 上用 GTR 搜索（A-P6:16-21）。教学推导: 因为 CLOSED BOOK 生成阶段不可见任何 passage，模型生成基于参数/提示知识；POST CITE 阶段不改变文本，只是在生成句子级别用向量检索 (GTR) 从 top-100 找最相似 passage 并附上编号。因果解释: 所见信息不同——生成阶段信息受限于模型参数与提示（因此可能更“泛”或更靠记忆），而补引阶段的信息来自检索池的最近邻匹配；GTR/top-100 决定了能否为某一语句找到候选来源。适用边界: 该重建严格依据文中流程描述；未证实具体 GTR 匹配阈值、相似度度量或多语句合并策略，故不能推断更细的实现细节或匹配质量。",
+      "evidence": [
+        {
+          "source_id": "A-P6",
+          "start_line": 22,
+          "end_line": 26
+        },
+        {
+          "source_id": "A-P6",
+          "start_line": 34,
+          "end_line": 37
+        },
+        {
+          "source_id": "A-P5",
+          "start_line": 47,
+          "end_line": 51
+        },
+        {
+          "source_id": "A-P6",
+          "start_line": 16,
+          "end_line": 21
+        }
+      ],
+      "limitations": "基于文内高层描述推断阶段间信息流；文档未给出 GTR 相似度阈值、匹配策略或是否对多语句执行聚合匹配，故无法断言细粒度实现或失败率。"
+    },
+    {
+      "id": "D2",
+      "answer": "证据映射: 直接摘录 Table 4 中 ASQA（ChatGPT）两行并计算差值。原文摘录（表头说明、基准与单位已并入解读）: 表头为 Fluency (MAUVE), Correct. (EM Rec.), Citation Rec., Citation Prec.（单位为 MAUVE 分 / 百分点）；VANILLA(5-psg)：66.6 | 40.4 | 73.6 | 72.5（A-P6:53-54）；CLOSEDBOOK：52.7 | 38.3 | 26.7 | 26.7（A-P6:58-60；表注说明 CLOSED BOOK 与 POST CITE 结合使用，见 A-P6:69-71）。教学推导与计算: 差值 = CLOSEDBOOK − VANILLA：Fluency = 52.7 − 66.6 = −13.9（单位：MAUVE 分，说明闭卷流畅度减少 13.9 MAUVE）；Correct(EM Rec.) = 38.3 − 40.4 = −2.1（百分点）；Citation Rec. = 26.7 − 73.6 = −46.9（百分点）；Citation Prec. = 26.7 − 72.5 = −45.8（百分点）。脚注: MAUVE 为流畅性度量，其数值不可直接当作百分比解释；其余三列为以百分比计的召回/精度百分点。适用边界: 计算仅限表中 ChatGPT、ASQA 的两行数据；未扩展到其它模型/数据集或不同 k 值。",
+      "evidence": [
+        {
+          "source_id": "A-P6",
+          "start_line": 51,
+          "end_line": 60
+        },
+        {
+          "source_id": "A-P6",
+          "start_line": 69,
+          "end_line": 71
+        }
+      ],
+      "limitations": "表格值为论文给出的摘要统计；MAUVE 与百分点不可混用；未提供置信区间或统计显著性测试，故差值仅为点估计，不能单凭差值断定原因。"
+    },
+    {
+      "id": "D3",
+      "answer": "证据映射: 用到 citation recall 的形式化定义与对“irrelevant”引用的判定说明，以及 CLOSED BOOK 与 POST CITE 的行为描述。原文摘录: 文中将 citation recall 定义为对每个 statement，若存在至少一个 citation 且 NLI( concat(Ci), s_i ) = 1 则为 1（A-P4:110-118,121-122）；文中也定义“irrelevant”当且仅当单个引用不能支持且去掉它其余仍能支持（A-P5:17-24,26-29）；POST CITE 为对每个 statement 在 top-100 用 GTR 找最佳匹配并标注引用（A-P6:34-37）；另外作者指出 CLOSED BOOK 常生成“正确但与任何检索到的 passages 不相似”，导致后验匹配困难（A-P7:50-52）。教学推导: 根据定义，citation recall 要求合并（concat）被引用的 passage 能用 NLI 判定“entail”该 statement；因此仅仅把引用编号补上（即给句子贴上一个 id）并不等同于“来源蕴含”该句——除非该编号对应的文本拼接后通过 NLI 判定为蕴含。因果解释: POST CITE 是基于向量检索（GTR）取最近邻并贴编号，因此若生成文本是模型记忆的改写或与来源语句表述差异大，GTR 可能找不到能被 NLI 证为蕴含的 passage，导致 citation recall 低。区分——“来源支撑”（source supports）指 concat(Ci) ⊧ statement（可用 NLI 验证）；“答案正确性”则是 statement 本身在事实层面正确与否，两者可不一致（如模型记忆正确但相应文本不在检索池）。适用边界: 以上结论仅依据论文对 recall/precision 的形式化与作者对 CLOSED BOOK+POST CITE 的人工分析；未包含具体 GTR 检索召回/重排策略或 NLI 的误判率。",
+      "evidence": [
+        {
+          "source_id": "A-P4",
+          "start_line": 110,
+          "end_line": 118
+        },
+        {
+          "source_id": "A-P4",
+          "start_line": 121,
+          "end_line": 122
+        },
+        {
+          "source_id": "A-P5",
+          "start_line": 17,
+          "end_line": 24
+        },
+        {
+          "source_id": "A-P5",
+          "start_line": 26,
+          "end_line": 29
+        },
+        {
+          "source_id": "A-P6",
+          "start_line": 34,
+          "end_line": 37
+        },
+        {
+          "source_id": "A-P7",
+          "start_line": 50,
+          "end_line": 52
+        }
+      ],
+      "limitations": "结论依赖于 NLI 作为判定蕴含的代理；若 NLI 有漏判／误判或 GTR 返回的文本为部分支持但非完全蕴含，二者会影响判断。文中亦声明算法忽略“部分支持”情形（A-P5:30-32）。"
+    },
+    {
+      "id": "D4",
+      "answer": "证据映射: 结合论文对 CLOSED BOOK+POST CITE 表现与作者的人工分析，并保留模型/任务/流程变量。原文摘录: 论文报告 CLOSED BOOK 在某些任务上 correctness 更高但 citation 质量差，且指出两点原因：开卷模型易被无关 passage 干扰导致 correctness 降低；CLOSED BOOK 常生成与检索文本不相似的正确表述，难以后验匹配（A-P7:34-52）。模型与任务信息：实验以 ChatGPT (gpt-3.5-turbo-0301)、ChatGPT-16K、GPT-4 等为代表，ASQA 为其中任务示例（A-P6:40-44，A-P6:51-56）。教学推导与判断: 能否将差值归因于“参数知识更强”（模型记忆）或“检索唯一因果”（检索/后处理失败）并非单一可断定。文中证据支持混合解释：一方面 CLOSED BOOK 的较高 correctness 强烈暗示模型参数/提示里确有可用事实（参数知识作用）；另一方面 作者明确指出 open-book（VANILLA）会被不相关检索结果干扰且 POST CITE 无法可靠匹配生成文本（检索与后验匹配的问题），这说明检索与匹配流程对 citation quality 与最终可审计性有决定性影响。因果解释: 差值中，正确性提升可由参数记忆驱动（CLOSED BOOK）；而 citation 质量下降则主要由后验匹配失败与检索分布不覆盖导致。适用边界: 结论限定于论文实验配置（模型版本如 ChatGPT/gpt-3.5、任务 ASQA 等；流程差异为 VANILLA（open-book、top-k）vs CLOSED BOOK+POST CITE）；不能推广为所有模型/所有检索器的普遍因果断定，亦无法量化两因子各自的精确贡献（作者未给出因果分解或干预实验）。",
+      "evidence": [
+        {
+          "source_id": "A-P7",
+          "start_line": 34,
+          "end_line": 52
+        },
+        {
+          "source_id": "A-P6",
+          "start_line": 40,
+          "end_line": 44
+        },
+        {
+          "source_id": "A-P5",
+          "start_line": 47,
+          "end_line": 51
+        }
+      ],
+      "limitations": "论文提供的是观察性比较和人工分析，没有做随机对照以分离参数记忆与检索干扰的独立因果效应；因此只能给出有根据的混合解释并保留不确定性。"
+    }
+  ]
+}

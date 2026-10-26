@@ -1,0 +1,2 @@
+D1重建FiD训练模型、epoch、batch、learning rate、训练数据和POST CITE/top5设置；D2抄Tables17/18两模型四列，分别算FiD减ChatGPT的正确性、citation recall和precision；D3区分in-domain/out-of-domain与公平因果比较，解释原文not a direct comparison；D4界定能否推出所有微调模型或所有域迁移必失败，保留数据、模型规模和训练范围。
+只根据所供原文。严格JSON，decisions数组含D1至D4各一项，每项有id、answer、evidence数组（source_id、start_line、end_line）和limitations。允许source_id值为["A-P6", "A-P15", "A-P16", "A-P17"]；仅用ID值，不带SOURCE或页码后缀。行号整数无前导0。每项完整回答对应题。缺证据明说。约1000至1400中文字。

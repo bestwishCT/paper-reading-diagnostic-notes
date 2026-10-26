@@ -1,0 +1,82 @@
+{
+  "decisions": [
+    {
+      "id": "D1",
+      "answer": "证据映射：见证据段落（下列为映射）。\n原文（直接摘录/复述）：论文在 A-P16 明确记录：训练了一个基于 T5-base 的 Fusion-in-Decoder (FiD)；在 ASQA 训练集上训练；训练细节为 5 个 epoch，batch size = 64，learning rate = 1e-4；训练与评估均使用 k = 5 个检索段（top-5 passages）；评估阶段使用 POST CITE 为输出添加引用（POST CITE 在评估时使用）。（证据见下）\n教学推导（如何还原）：据原文可重建的要点为：模型架构 = FiD (T5-base)；训练集 = ASQA training set（论文另处说明规模为“4000+ examples”）；训练轮次 = 5；批次 = 64；学习率 = 1e-4；训练与评估时均把检索得到的 top-5 passages 作为输入上下文（k=5）；评估阶段执行 POST CITE 用于在生成后附加引用。所有这些要点均直接来自论文段落，故可视为可复现的超参/流程。\n因果解释（为何这么设置）：论文指出因缺乏带引用标注的训练数据，作者选择用 POST CITE 在评估时补上引用，且用 k=5 保持训练与评估一致性。训练轮次、batch、lr 为作者为小规模微调（T5-base，约4000+例）选择的设定，用以尽可能学习任务同时避免过拟合。\n适用边界/限制：原文只报告了用 T5-base FiD 在 ASQA 上的单一训练配置（5 epoch, bs64, lr1e-4, k=5）；这意味着我们只能断定该具体配置存在且被使用，但不能据此断定其它 FiD 变体或超参组合会有相同表现。若需精确复现，还需原始随机种子、优化器细节、数据预处理和训练步数等（论文未在上述段落详尽列出）。\n证据数组：[{\"source_id\":\"A-P16\",\"start_line\":68,\"end_line\":73},{\"source_id\":\"A-P16\",\"start_line\":80,\"end_line\":82}]\n",
+      "evidence": [
+        {
+          "source_id": "A-P16",
+          "start_line": 68,
+          "end_line": 73
+        },
+        {
+          "source_id": "A-P16",
+          "start_line": 80,
+          "end_line": 82
+        }
+      ],
+      "limitations": "只根据论文给出的段落填写；论文未给出优化器名称、随机种子、完整预处理与精确训练步数等细节，故无法完全复现所有低阶实现细节。"
+    },
+    {
+      "id": "D2",
+      "answer": "证据映射：比较基于论文表格 Table 17（ASQA）与 Table 18（ELI5），均在 A-P17。表中列为：Fluency (MAUVE)、Correct. (EM)、Citation Rec.、Citation Prec.。比较遵循“表头 / 基准 / 目标 / 单位 / 注脚”要求：表头见下；基准 = ChatGPT(VANILLA)；目标 = FiD + POSTCITE；单位为“分数/百分比点”（表中度量为绝对分数，差值以“百分点”表示）；脚注：两模型均使用 top-5 GTR passages（论文说明）。\n原文表（摘录关键信息）：\n- Table 17 (ASQA)：表头[Fluency(MAUVE), Correct.(EM), Rec., Prec.]；ChatGPT = [66.6, 40.4, 73.6, 72.5]；FiD+POSTCITE = [75.8, 28.4, 58.1, 58.0]。注：两模型均用 top-5 GTR。\n- Table 18 (ELI5)：表头同上；ChatGPT = [57.2, 12.0, 51.1, 50.0]；FiD+POSTCITE = [25.2, 4.4, 39.3, 39.3]。注：两模型均用 top-5 GTR。\n计算（FiD 减 ChatGPT，各项以百分点）：\n- ASQA：Correct. = 28.4 − 40.4 = −12.0 pp；Citation recall = 58.1 − 73.6 = −15.5 pp；Citation precision = 58.0 − 72.5 = −14.5 pp。\n- ELI5：Correct. = 4.4 − 12.0 = −7.6 pp；Citation recall = 39.3 − 51.1 = −11.8 pp；Citation precision = 39.3 − 50.0 = −10.7 pp。\n教学推导：比较直接用表中实数相减，单位为百分点（percentage points），脚注中说明两者均使用 top-5 GTR 检索，因此在检索 k 上是一致的，但模型类型、训练资源与可用示例不同（详见 D3 的不直接可比说明）。\n因果解释：差值显示 FiD（在本设置下）在正确性与引用质量上均落后 ChatGPT；论文也指出 FiD 为小规模微调（T5-base，训练约4000+示例），而 ChatGPT 是通过 few-shot prompting 使用更大模型，从而可能是性能差异的一部分原因。\n适用边界/限制：比较仅反映论文中这两张表的数值；表格已提供基准与目标并说明 top-5 设置，但论文同时声明“this is not a direct comparison”（见 D3），因此差值不能作为普遍结论或因果断言的充分证据。\n证据数组：[{\"source_id\":\"A-P17\",\"start_line\":10,\"end_line\":13},{\"source_id\":\"A-P17\",\"start_line\":41,\"end_line\":46},{\"source_id\":\"A-P16\",\"start_line\":71,\"end_line\":73}]\n",
+      "evidence": [
+        {
+          "source_id": "A-P17",
+          "start_line": 10,
+          "end_line": 13
+        },
+        {
+          "source_id": "A-P17",
+          "start_line": 41,
+          "end_line": 46
+        },
+        {
+          "source_id": "A-P16",
+          "start_line": 71,
+          "end_line": 73
+        }
+      ],
+      "limitations": "仅在表中给出的数值上进行算术比较；论文同时提醒该比较非直接可比，因模型规模与训练/提示资源不同，故差值不应被视为普适因果结论。"
+    },
+    {
+      "id": "D3",
+      "answer": "证据映射：A-P16 明确区分 in-domain (ASQA) 与 out-of-domain (ELI5) 评估，并声明“this is not a direct comparison”。A-P6/A-P16 提到 ChatGPT 是通过 few-shot prompting 使用（大）聊天模型进行评估。请见下列证据段落。\n原文（关键陈述）：论文在 A-P16 说明：FiD 在 ASQA（in-domain）与 ELI5（out-of-domain）上被评估；并注：这不是直接比较，因为 ALCE（作者提出的方法）在设置上只假定可得评估数据并采用少量示例用于 prompting，而 FiD 则接受监督微调（多千例训练）。（证据见下）\n教学推导（如何区分）：按论文术语，in-domain = 在 FiD 训练所用的 ASQA 数据上评测；out-of-domain = 将训练于 ASQA 的模型直接在不同任务/分布（ELI5）上评测。论文在报告结果时分别呈现 Table 17（ASQA）与 Table 18（ELI5），并报告性能下降，表明存在域转移影响。\n因果解释（为何“not a direct comparison”）：论文明确指出两者的可用资源与实验假设不同：FiD 是有监督微调（数千条训练样本），而 ALCE/ChatGPT 的评测主要使用 few-shot prompting（仅评估数据与少量示例）。另外，模型规模与预训练背景不一致（ChatGPT 为大聊天模型，FiD 为 T5-base）。因此任何直接把两者性能差别归因于“微调优于提示/反之”都是不充分的，因为存在混淆因子（训练样本量、模型规模、训练范式、检索一致性等）。\n适用边界/限制：根据原文，只能断定在论文给定的设置下（T5-base FiD 用 ~4000+ 训练示例、ChatGPT few-shot）FiD 在两域的表现如表所示；但不能推广到所有微调模型或所有提示方法。论文自述即要求谨慎解读该比较。\n证据数组：[{\"source_id\":\"A-P16\",\"start_line\":75,\"end_line\":82},{\"source_id\":\"A-P6\",\"start_line\":39,\"end_line\":46}]\n",
+      "evidence": [
+        {
+          "source_id": "A-P16",
+          "start_line": 75,
+          "end_line": 82
+        },
+        {
+          "source_id": "A-P6",
+          "start_line": 39,
+          "end_line": 46
+        }
+      ],
+      "limitations": "仅依赖论文中关于实验设定的描述；论文并未给出可用于消除混淆因子的完全对照实验（例如同等规模模型的微调与提示对比），因此无法从原文推出更宽泛的因果结论。"
+    },
+    {
+      "id": "D4",
+      "answer": "证据映射：论文在 A-P16/A-P17 多处指出 FiD（T5-base）在本设置下落后并且对跨域（ELI5）性能更差，但同时强调该比较并非普遍适用（见 A-P16 的说明与 A-P17 的表格）。\n回答（能否推出普遍结论）：不能从论文中推出“所有微调模型”或“所有域迁移必失败”。原文仅报告了对一个小预训练模型（T5-base FiD）在特定训练量（论文处称“4000+ examples”）和设定（k=5, POST CITE）下的结果：在 in-domain（ASQA）和 out-of-domain（ELI5）上表现均落后于用 few-shot prompting 的 ChatGPT（表 17 与 18 所示），并指出“it is challenging to solve the problem by fine-tuning a small pre-trained model”。这只是对“该小规模微调实例”的结论，而非对所有微调或所有规模/配置的普适命题。\n因果解释与适用边界：导致该结论不可推广的关键因素（均在文中被暗示或直接提及）包括：模型规模差异（T5-base vs ChatGPT 大模型）、训练样本数量/质量（~4000+ vs few-shot prompting 但更强的预训练能力）、训练范式差异（有监督微调 vs prompting）、以及评估任务与检索一致性。论文本身提醒读者该比较的局限性（见 A-P16 的“not a direct comparison”）。因此只能得出有限结论：在论文给定的小规模微调设定下，微调 FiD 难以超越 ChatGPT；但不能断言所有微调或所有域迁移都会失败，需要对不同模型规模、更多训练数据和更广训练/正则化策略做额外实验。\n证据数组：[{\"source_id\":\"A-P16\",\"start_line\":80,\"end_line\":86},{\"source_id\":\"A-P17\",\"start_line\":44,\"end_line\":46},{\"source_id\":\"A-P16\",\"start_line\":75,\"end_line\":82}]\n",
+      "evidence": [
+        {
+          "source_id": "A-P16",
+          "start_line": 80,
+          "end_line": 86
+        },
+        {
+          "source_id": "A-P17",
+          "start_line": 44,
+          "end_line": 46
+        },
+        {
+          "source_id": "A-P16",
+          "start_line": 75,
+          "end_line": 82
+        }
+      ],
+      "limitations": "结论仅基于论文报告的单一微调实例（T5-base FiD，训练约4000+示例）；缺乏关于更大模型、更多训练数据或不同微调策略的直接证据，因此无法推广到所有情形。"
+    }
+  ]
+}

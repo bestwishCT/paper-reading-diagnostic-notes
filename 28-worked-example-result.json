@@ -1,0 +1,50 @@
+[
+  {
+    "answer_correct": false,
+    "has_citation": false,
+    "source_entails": false,
+    "citation_recall": 0
+  },
+  {
+    "answer_correct": false,
+    "has_citation": false,
+    "source_entails": true,
+    "citation_recall": 0
+  },
+  {
+    "answer_correct": false,
+    "has_citation": true,
+    "source_entails": false,
+    "citation_recall": 0
+  },
+  {
+    "answer_correct": false,
+    "has_citation": true,
+    "source_entails": true,
+    "citation_recall": 1
+  },
+  {
+    "answer_correct": true,
+    "has_citation": false,
+    "source_entails": false,
+    "citation_recall": 0
+  },
+  {
+    "answer_correct": true,
+    "has_citation": false,
+    "source_entails": true,
+    "citation_recall": 0
+  },
+  {
+    "answer_correct": true,
+    "has_citation": true,
+    "source_entails": false,
+    "citation_recall": 0
+  },
+  {
+    "answer_correct": true,
+    "has_citation": true,
+    "source_entails": true,
+    "citation_recall": 1
+  }
+]

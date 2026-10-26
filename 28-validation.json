@@ -1,0 +1,112 @@
+{
+  "status": "ranges_valid",
+  "errors": [],
+  "semantic": "not_evaluated",
+  "excerpts": [
+    {
+      "decision": "D1",
+      "source_id": "A-P6",
+      "start_line": 22,
+      "end_line": 26,
+      "text": "CLOSED BOOK. We also add a simple closed-\nbook baseline, where the model is only prompted\nwith the instruction and the question, without any\nretrieved passages provided. Consequently, this\nvariant does not cite any evidences."
+    },
+    {
+      "decision": "D1",
+      "source_id": "A-P6",
+      "start_line": 34,
+      "end_line": 37,
+      "text": "POST CITE. For each statement, we find the best\nmatching passage among the top-100 retrieved pas-\nsages using GTR and cite it. We combine this with\nCLOSED BOOK in our experiments."
+    },
+    {
+      "decision": "D1",
+      "source_id": "A-P5",
+      "start_line": 47,
+      "end_line": 51,
+      "text": "We explore simple, off-the-shelf retrievers. We use\ndense retrievers for Wikipedia, including GTR (Ni\net al., 2022) and DPR (Karpukhin et al., 2020);\nwe use BM25 for Sphere. For each question, we\nretrieve the top-100 passages."
+    },
+    {
+      "decision": "D1",
+      "source_id": "A-P6",
+      "start_line": 16,
+      "end_line": 21,
+      "text": "{query}” to search among the top-100 passages11\nby using GTR; the “Output” and “End” actions are\nthe same as INTERACT . For each “Search” action,\nwe display the best retrieved passage in the context.\nThe passage is removed after one action to save\ncontext space. Table 3 shows an example."
+    },
+    {
+      "decision": "D2",
+      "source_id": "A-P6",
+      "start_line": 51,
+      "end_line": 60,
+      "text": "Fluency Correct. Citation\n(MAUVE) (EM Rec.) Rec. Prec.\nChatGPT\nVANILLA(5-psg) 66.6 40.4 73.6 72.5\nw/ RERANK 77.0 40.2 84.8 81.6\nSUMM(10-psg) 70.0 43.3 68.9 61.8\nw/ INTERACT 69.0 39.1 73.4 66.5\nSNIPPET(10-psg) 69.8 41.4 65.3 57.4\nINLINESEARCH 58.7 32.4 58.3 58.2\nCLOSEDBOOK 52.7 38.3 26.7 26.7"
+    },
+    {
+      "decision": "D2",
+      "source_id": "A-P6",
+      "start_line": 69,
+      "end_line": 71,
+      "text": "Table 4: Experiments on ASQA. For CLOSED BOOK,\nwe use POST CITE to get citations. k-psg: putting top-\nk passages from the retrieval results into the context."
+    },
+    {
+      "decision": "D3",
+      "source_id": "A-P4",
+      "start_line": 110,
+      "end_line": 118,
+      "text": "Citation recall. We calculate the citation recall of\neach statement (0 or 1) and average over all state-\nments in the model response. For each statementsi,\nits citation recall is 1 if and only if there is at least\none citation (Ci̸=∅) and ϕ(concat(Ci),s i) = 1 ,\nwhere ϕ(premise, hypothesis) is the NLI model\nthat outputs 1 if the premise entails the hypoth-\nesis, and 0 otherwise; concat(Ci) concatenates all\npassages inCi together (details in §C). The NLI"
+    },
+    {
+      "decision": "D3",
+      "source_id": "A-P4",
+      "start_line": 121,
+      "end_line": 122,
+      "text": "2023):ϕ(concat(Ci),s i) = 1 implies thatsi is true\nbased solely on concat(Ci)."
+    },
+    {
+      "decision": "D3",
+      "source_id": "A-P5",
+      "start_line": 17,
+      "end_line": 24,
+      "text": "response. We first define if a citation is “irrele-\nvant”. Intuitively, a citationci,jis “irrelevant” if (a)\nci,jitself cannot supportsi and (b) removingci,j\ndoes not affect the rest of the citations to support\nsi. Formally,ci,jis “irrelevant” if and only if\n(a) ϕ(ci,j,s i) = 0 , AND\n(b) ϕ(concat(Ci\\{ci,j}),s i) = 1 .\nci,j has a precision of 1 if si has recall =1 and"
+    },
+    {
+      "decision": "D3",
+      "source_id": "A-P5",
+      "start_line": 26,
+      "end_line": 29,
+      "text": "when s3 cites three references [2][4][5] and\nrecall=1, [2] is “irrelevant” ifϕ([2],s 3) = 0 and\nϕ([4][5],s 3) = 1 . For condition (b) to work, we\nset recall =1 as a prerequisite for precision = 1 ."
+    },
+    {
+      "decision": "D3",
+      "source_id": "A-P6",
+      "start_line": 34,
+      "end_line": 37,
+      "text": "POST CITE. For each statement, we find the best\nmatching passage among the top-100 retrieved pas-\nsages using GTR and cite it. We combine this with\nCLOSED BOOK in our experiments."
+    },
+    {
+      "decision": "D3",
+      "source_id": "A-P7",
+      "start_line": 50,
+      "end_line": 52,
+      "text": "CLOSED BOOK often generates texts that are cor-\nrect but not similar to any retrieved passages, mak-\ning it difficult to match a citation post-hoc."
+    },
+    {
+      "decision": "D4",
+      "source_id": "A-P7",
+      "start_line": 34,
+      "end_line": 52,
+      "text": "CLOSED BOOK+POST CITE delivers strong cor-\nrectness but poor citation quality. CLOSED -\nBOOK outperforms VANILLA in correctness on\nELI5 and QAMPARI, and has only a 2% gap on\nASQA. However, CLOSED BOOK cannot provide\nany citation; when combined with POST CITE, the\ncitation quality remains inadequate. For instance,\ncitation recall of CLOSED BOOK+POST CITE is\nlower than VANILLA by 47% on ASQA.\nTo understand why CLOSED BOOK achieves bet-\nter correctness and why POST CITE cannot deliver\nsatisfying citation quality, we manually examine\nmodel outputs and find that: (1) open-book mod-\nels are easily distracted by irrelevant passages and\ngenerate responses with lower correctness, a phe-\nnomenon also observed by Shi et al. (2023); (2)\nCLOSED BOOK often generates texts that are cor-\nrect but not similar to any retrieved passages, mak-\ning it difficult to match a citation post-hoc."
+    },
+    {
+      "decision": "D4",
+      "source_id": "A-P6",
+      "start_line": 40,
+      "end_line": 44,
+      "text": "GPT (gpt-3.5-turbo-0301) with a 4K context\nwindow for most main experiments and ablations.\nWe also report results with ChatGPT-16K ( gpt-\n3.5-turbo-16k-0613) and GPT-4 (gpt-4-0613;\n8K context window). For open-source models,"
+    },
+    {
+      "decision": "D4",
+      "source_id": "A-P5",
+      "start_line": 47,
+      "end_line": 51,
+      "text": "We explore simple, off-the-shelf retrievers. We use\ndense retrievers for Wikipedia, including GTR (Ni\net al., 2022) and DPR (Karpukhin et al., 2020);\nwe use BM25 for Sphere. For each question, we\nretrieve the top-100 passages."
+    }
+  ]
+}

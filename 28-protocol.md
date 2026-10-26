@@ -1,0 +1,1 @@
+2026-10-26。本篇一次新的workflow调用，不设baseline，不研究提示增益。Bohrium原生CLI2.8.1，gpt-5-mini/photon，无历史工具，180秒；先dry-run逐字核对message。snapshot/seed/temperature不能锁定。设计者熟悉论文与旧工作，非隐藏测试；Codex辅助非盲核查，非独立人类评审。保留全部请求响应与失败，不挑选重答。费用未知为null。

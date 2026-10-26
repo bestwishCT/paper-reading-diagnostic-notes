@@ -1,0 +1,57 @@
+{
+  "decisions": [
+    {
+      "id": "D1",
+      "answer": "证据映射（见 evidence 字段）。\n原文：G.5 报告了 ALCE 在以人工标注为金标准时的自动度量准确率——“citation recall 的 accuracy 为 85.1%，citation precision 的 accuracy 为 77.6%”；同时对两类错误检测给出召回/精确率：检测“insufficient citations” 的 recall = 82.3%，precision = 84.2%；检测“irrelevant” citations 的 recall = 75.6%，precision = 66.1%（均来自 G.5 说明，数值按原文）。评估对象：文本明确说明这是把“human annotations as gold labels” 时评估 ALCE（自动评估器/自动度量）对 citation recall/precision 以及对两类错误检测的表现（原文）。\n教学推导：从原文可直接抄出上述四个 accuracy 值与两组错误检测的 recall/precision；它们衡量的是 ALCE 的自动判断相对于人类标注的匹配度。\n因果解释：数值反映若 ALCE 将某引用判为“支持/不支持/无关”等类别时，与人类标注一致的频率（准确率/召回/精确率），因此这些指标可用于估计 ALCE 在不同错误类型上的有效性和误报倾向。\n适用边界：这些度量均是在“把人工标注视作金标准”的条件下报告的；原文未给出原始样本量、类别基线或混淆矩阵细节，故不能把这些比率自动解读为样本绝对频数的充分描述。",
+      "evidence": [
+        {
+          "source_id": "A-P17",
+          "start_line": 16,
+          "end_line": 23
+        }
+      ],
+      "limitations": "原文仅给出比率与说明评估对象（ALCE vs human annotations），未给出样本总数、正负样本分布或混淆矩阵，因而不能从这些比率直接还原计数。"
+    },
+    {
+      "id": "D2",
+      "answer": "证据映射（见 evidence 字段）。\n表头说明（跨页连读）：表头 = [Metric, 基准, 目标, 单位, 脚注]。基准（Benchmark）指论文中用于比较的“human annotations”（人工标注）或 ALCE 输出；目标（Target）为 ALCE 的对应度量；单位（Unit）为百分比（%）；脚注（Footnote）注明“accuracy 是把 human annotations 视作金标准来计算；Cohen’s kappa 衡量双方一致性”。（以上均由原文信息整理为比较框架，跨页信息见 A-P9 与 A-P17。）\n原文：A-P17 报告 ALCE 在“把人工标注作为金标准”下的 accuracy（citation recall accuracy 85.1%，citation precision accuracy 77.6%）；同页并报告检测“irrelevant” 的 precision=66.1%（用于评估错误检测的精确率）；A-P9 报告了 Cohen’s kappa（recall 的 kappa=0.698，precision 的 kappa=0.525），并把 kappa 描述为“human and ALCE” 之间的一致性指标。 \n教学推导（区分并不混用分母）：\n- “citation precision”（论文中常说的 citation precision accuracy=77.6%）在原文里是 ALCE 与人工标注比对时 ALCE 标记为“支持”的引用中真正被人类判为支持的比例，计算时分母为 ALCE 标为正的样本（或论文指定的情形）；\n- “检测 irrelevant 的 precision=66.1%” 专指 ALCE 在辨识“irrelevant”错误（即将某引用判为无关/irrelevant）上的精确率，分母为 ALCE 判为 irrelevant 的实例数；\n- “accuracy”（如 85.1%/77.6%）是把人类标注当作金标准后，对所有被评估的项计算正确与否的总体比率，分母为被评估的所有项；\n- “Cohen’s kappa”（0.698/0.525）为双方一致性度量，包含对偶然一致性的校正，分母和归一化方式与简单 accuracy/precision/recall 不同，因此不能与前述指标直接合并计算或混用分母。 \n因果解释：kappa 表示超出随机一致性的程度，accuracy/precision 则是绝对匹配率或条件匹配率，三者回答的统计问题不同且分母不同，混用会导致误解。 \n适用边界：以上均基于原文给出的数值与描述（A-P9, A-P17）；原文未给出具体分母或样本计数，故不能以此推断精确的计数或基线分布。",
+      "evidence": [
+        {
+          "source_id": "A-P17",
+          "start_line": 17,
+          "end_line": 23
+        },
+        {
+          "source_id": "A-P9",
+          "start_line": 27,
+          "end_line": 33
+        }
+      ],
+      "limitations": "原文给出 kappa 与若干 accuracy/precision 值，但未公开各指标的计数分母或样本量，所以上述区分依赖对指标定义的逻辑推导而非额外计数证据。"
+    },
+    {
+      "id": "D3",
+      "answer": "证据映射（见 evidence 字段）。\n原文：G.5 给出“detecting 'irrelevant' citations: recall = 75.6%，precision = 66.1%”（A-P17）。\n教学推导与数学结论：precision = TP/(TP+FP)，recall = TP/(TP+FN)。仅知道 precision 和 recall（两个比率）并不能唯一确定混淆矩阵中的三个未知数 TP、FP、FN（以及真负 TN 或总体样本量 N）——这两个方程对三个或四个未知数而言欠定，存在无限可扩展的标量解。可以用这两个比率表达 FP 与 FN 相对于 TP 的关系，但 TP 本身及样本总量未定：FP = TP*(1/precision - 1)，FN = TP*(1/recall - 1)。除非额外给出 TP 或总样本数或某类比例，否则不能反推出唯一混淆矩阵、不能确定样本量，也不能断定所有引用中“无关（irrelevant）”的比例。\n因果解释：不同的 TP 值按相同比率放大会导致相同的 precision/recall，但对应不同的绝对误报和漏报数；因此没有样本规模信息时，无法把比率映射为唯一的计数。\n适用边界：上述结论依据基本二分类混淆矩阵定义，并严格依赖于论文仅给出的两项比率（A-P17）。如果原文补充了总数或 TP 值，则可唯一还原；但原文未给出，故不可反推唯一解。",
+      "evidence": [
+        {
+          "source_id": "A-P17",
+          "start_line": 21,
+          "end_line": 23
+        }
+      ],
+      "limitations": "结论依赖于数学关系与原文仅有的两个比率；若存在未公开的额外信息（如总样本数或 TP 计数），则上述不可唯一性可被消除，但原文未提供。"
+    },
+    {
+      "id": "D4",
+      "answer": "证据映射（见 evidence 字段）。\n原文：G.5 明确指出 ALCE 在检测“irrelevant”时的精确率偏低（precision=66.1%），并说明“due to the limitation of the NLI model (cannot detect ‘partial support’), it has a relatively high false positive rate.”（A-P17）。\n教学推导：当人工标注将某引用标为“partially supports”（部分支持）时，若 ALCE 的 NLI 子模块无法识别“部分支持”这一中间态，可能会把该引用归为“fully supports”（完全支持）或归为“non-irrelevant”（即非无关），从而在“检测 irrelevant” 的任务上产生假阳性（false positive，ALCE 判为 relevant/support 而人类不视为 fully supported），这会降低检测 irrelevant 的 precision 并推高假阳性率。换言之，NLI 对“部分支持”的盲区导致把部分支持误判为充分支持或相关，从而使得“irrelevant”检测出现误报方向上的偏差。\n因果解释：NLI 模型能力限制（无法区分部分与完全支持）是导致误判方向（产生假阳性）的一种直接机制，因此改善 NLI 对 partial-support 的判别可望降低假阳性并提高 precision。\n适用边界：此解释限于论文所述情形（ALCE 使用的 NLI 模型不能检测 partial support）；我们不将 ALCE 的自动判定视为真值——原文就是用人工标注作为金标准来评估 ALCE（A-P17），自动判定只是被评测的对象而非真值来源。",
+      "evidence": [
+        {
+          "source_id": "A-P17",
+          "start_line": 20,
+          "end_line": 26
+        }
+      ],
+      "limitations": "原文指出 NLI 模型不能检测“partial support”并将此归因于高假阳性，但未提供逐项示例或类别计数来量化该效应的绝对影响范围；因此关于改进后精确率提升的幅度为推断而非直接证据。"
+    }
+  ]
+}

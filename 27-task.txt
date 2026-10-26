@@ -1,0 +1,2 @@
+D1抄出G.5的两个accuracy和两类错误检测的recall/precision，说明评估对象；D2区分citation precision、检测irrelevant的precision、accuracy和kappa，不把不同分母混用；D3只给75.6%检测recall与66.1%检测precision，能否反推出唯一混淆矩阵、样本量或所有引用中无关比例，给理由；D4解释partial support导致假阳性的方向与适用范围，不声称自动分是真值。
+只根据所供原文。严格JSON，decisions数组含D1至D4各一项，每项有id、answer、evidence数组（source_id、start_line、end_line）和limitations。允许source_id值为["A-P8", "A-P9", "A-P17"]；仅用ID值，不带SOURCE或页码后缀。行号整数无前导0。每项完整回答对应题。缺证据明说。约1000至1400中文字。

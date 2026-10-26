@@ -1,0 +1,31 @@
+{
+  "seconds": 36.768,
+  "model": "chenkun/gpt-5-mini",
+  "usage": {
+    "completion_tokens": 5211,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 2240,
+      "rejected_prediction_tokens": 0
+    },
+    "latency_checkpoint": {
+      "engine_tbt_ms": 6,
+      "engine_ttft_ms": 117,
+      "engine_ttlt_ms": 32782,
+      "pre_inference_ms": 123,
+      "service_tbt_ms": 6,
+      "service_ttft_ms": 367,
+      "service_ttlt_ms": 33036,
+      "user_visible_ttft_ms": 244
+    },
+    "prompt_tokens": 5068,
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    },
+    "total_tokens": 10279
+  },
+  "completion_id": "chatcmpl-EdAGPEoADJwlwZ1wh1KH2uimeuaY7",
+  "cost": null
+}

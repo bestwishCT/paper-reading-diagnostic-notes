@@ -1,0 +1,2 @@
+D1沿CLOSED BOOK到POST CITE重建生成阶段和补引阶段分别见了什么信息及top100/GTR操作；D2抄出Table4 ASQA VANILLA与CLOSED BOOK四列并算后者减前者，区分MAUVE分与百分点；D3结合citation recall定义解释为什么补上引用编号不等于来源蕴含，区分来源支撑与答案正确性；D4判断能否将差值归因为参数知识更强或检索唯一因果，保留模型版本、任务和两种流程差异。
+只根据所供原文。严格JSON，decisions数组含D1至D4各一项，每项有id、answer、evidence数组（source_id、start_line、end_line）和limitations。允许source_id值为["A-P4", "A-P5", "A-P6", "A-P7"]；仅用ID值，不带SOURCE或页码后缀。行号整数无前导0。每项完整回答对应题。缺证据明说。约1000至1400中文字。

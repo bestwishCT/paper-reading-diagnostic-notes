@@ -1,0 +1,22 @@
+{
+  "rouge_order": [
+    "ORACLE",
+    "VANILLA",
+    "Top1",
+    "LLaMA"
+  ],
+  "claim_order": [
+    "ORACLE",
+    "VANILLA",
+    "LLaMA",
+    "Top1"
+  ],
+  "oracle_minus_vanilla": [
+    0.6,
+    9.3
+  ],
+  "top1_minus_vanilla": [
+    -1.5,
+    -9.0
+  ]
+}

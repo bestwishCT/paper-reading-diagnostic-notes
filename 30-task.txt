@@ -1,0 +1,2 @@
+D1恢复Table10四行ROUGE-L与claim recall并计算ChatGPT ORACLE减VANILLA及Top1减VANILLA两列差值；D2解释ROUGE-L为何可被检索首段捷径抬高，而claim recall检查什么方向；D3以附录A说明三条subclaims来源、生成器与人工检查分母，不将claim recall等同完整事实正确性；D4判断两列排序一致是否足以证明可靠性，说明开放问题覆盖与NLI限制，不将表中分数叫本次复现实测。
+只根据所供原文。严格JSON，decisions数组含D1至D4各一项，每项有id、answer、evidence数组（source_id、start_line、end_line）和limitations。允许source_id值为["A-P3", "A-P4", "A-P14"]；仅用ID值，不带SOURCE或页码后缀。行号整数无前导0。每项完整回答对应题。缺证据明说。约1000至1400中文字。
