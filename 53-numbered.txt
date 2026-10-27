@@ -1,0 +1,272 @@
+SOURCE A-P8 physical PDF page 8
+1: 5 20 50 100
+2: k
+3: 30
+4: 40
+5: 50
+6: 60
+7: 70
+8: 80Recall@k
+9:  Vanilla (5-psg)
+10: Oracle
+11: ASQA
+12: DPR
+13: GTR
+14: 5 20 50 100
+15: k
+16: 0
+17: 20
+18: 40
+19: 60
+20: Vanilla (5-psg)
+21: Oracle
+22: QAMPARI
+23: DPR
+24: GTR
+25: 5 20 50 100
+26: k
+27: 10
+28: 20
+29: 30
+30: Vanilla (5-psg)
+31: Oracle
+32: ELI5
+33: BM25
+34: Fluency Correct. Citation
+35: (MAUVE) (EM) Rec. Prec.
+36: ChatGPT(VANILLA)
+37: DPR (5-psg) 61.8 36.1 65.0 65.6GTR (1-psg) 69.5 38.4 56.0 64.0GTR (3-psg) 66.6 39.6 72.8 73.9GTR (5-psg) 66.6 40.4 73.6 72.5
+38: Figure 4: Retrieval recall@k on ASQA (EM recall), QAMPARI (recall-5), and ELI5 (claim recall). Retrieval recall
+39: serves as an upper bound for model performance, and we compare them with two models’ correctness results in the
+40: figure (dashed lines): “Vanilla (5-psg)” is ChatGPTVANILLA with top-5 passages in context; “Oracle” is the same
+41: model except that it uses 5 gold passages (§G.1), whose recall matches Recall@100 on all three datasets.
+42: Fluency Correct. Citation
+43: (MAUVE) (EM Rec.) Rec. Prec.
+44: Open-source(max #tokens=2K-4K)
+45: LLaMA-13B (3-psg) 68.4 26.9 10.6 15.4
+46: Vicuna-13B (3-psg) 82.6 31.9 51.1 50.1
+47: Chat-13B (5-psg) 72.4 35.2 38.4 39.4
+48: Chat-70B (5-psg) 88.3 41.5 62.9 61.3
+49: ChatGPT(max #tokens=4K)
+50: ChatGPT (3-psg) 66.6 39.6 72.8 73.9
+51: ChatGPT (5-psg) 66.6 40.4 73.6 72.5
+52: ChatGPT-16K(max #tokens=16K)
+53: ChatGPT (5-psg) 60.3 36.1 76.2 76.5
+54: ChatGPT (10-psg) 56.3 36.7 75.3 75.0
+55: ChatGPT (20-psg) 56.7 36.1 73.7 73.5
+56: GPT-4(max #tokens=8K)
+57: GPT-4 (5-psg) 67.1 41.3 68.5 75.6
+58: GPT-4 (10-psg) 71.5 43.1 72.0 75.5
+59: GPT-4 (20-psg) 64.9 44.4 73.0 76.5
+60: Table 7: Comparison of different LLMs on ASQA
+61: (GTR+VANILLA ). LLaMA-13B and Vicuna-13B have
+62: a context limit of 2,048 tokens, and thus can only use a
+63: short version of instructions and at most top-3 passages.
+64: Chat-13B and Chat-70B refer to LLaMA-2-Chat.
+65: retrievers. As the number of passages increases, re-
+66: trieval recall steadily improves. Additionally, Fig-
+67: ure 4 shows the correctness performance of two
+68: models: (1) ChatGPT VANILLA with top-5 pas-
+69: sages (our primary baseline); (2) an oracle ver-
+70: sion of the same model employing 5 gold passages
+71: (§G.1; the 5 gold passages match the retrieval re-
+72: call@100). Notably, both models’ correctness lags
+73: behind the corresponding retrieval recall (except
+74: for ELI5 top-5). The discrepancy suggests that de-
+75: spite the presence of accurate answers in context,
+76: LLMs struggle to utilize them in their outputs.
+77: We compare the impact of different retrievers
+78: and different numbers of passages to LLMs. Fig-
+79: ure 4 (right) shows that GTR outperforms DPR
+80: in both correctness and citation quality, emphasiz-
+81: ing the importance of deploying better retrievers.
+82: Contrary to the retrieval recall trend in Figure 4,
+83: more passages in context do not yield substantial
+84: improvement for ChatGPT. Specifically, correct-
+85: ness plateaus at top-1 passage and citation qual-
+86: ity plateaus at top-3. GPT-4 (Table 7) exhibits
+87: an increasing trend with more passages, but the
+88: improvement is not proportional to the retrieval
+89: performance. This indicates the limited ability of
+90: LLMs in utilizing multiple passages within context.
+91: 5.4 Other Ablations
+92: We provide additional ablations in §G. In summary,
+93: we find that (1) using comprehensive instructions
+94: enhances the citation quality of instruction-tuned
+95: models (§G.2); (2) including at least one demon-
+96: stration improves the performance (§G.3); (3) fine-
+97: tuned models (FiD; Izacard and Grave, 2021) with
+98: POST CITE lag behind LLMs in both correctness
+99: and citation quality and fail to generalize (§G.4).
+100: 6 Human Evaluation
+101: To verify that our automatic evaluation correlates
+102: with human judgement, we conduct human eval-
+103: uation on selected models and request workers to
+104: judge model generations on three dimensions simi-
+105: lar to Liu et al. (2023)—(1) utility: a 1-to-5 score
+106: indicating whether the generation helps answer the
+107: question; (2) citation recall: the annotator is given
+108: a sentence and all passages that the sentence cited,
+109: and is asked to judge whether the passages fully
+110: support the sentence; (3) citation precision: given
+111: a sentence and one of its citations, the annotator
+112: is asked to judge whether the citation “fully sup-
+113: ports”, “partially supports”, or “does not support”
+114: the sentence. Each citation gets a precision score
+115: 1 if the output sentence has a citation recall of 1
+116: and this citation at least “partially supports” it. See
+117: Appendix F for more details.
+118: Model outputs score high utility. The utility
+119: scores do not differ significantly between models,
+120: ranging 3.7-3.9 for ASQA and 3.5-3.6 for ELI5.
+121: Upon inspection, all tested models are mostly able
+122: 6472
+
+SOURCE A-P9 physical PDF page 9
+1: Human scores ALCE scores
+2: Rec. Prec. Rec. Prec.
+3: ChatGPT VANILLA 74.7 76.6 75.3 74.4
+4: w/ RERANK 79.3 81.9 83.9 80.8
+5: Vicuna-13B VANILLA 51.6 51.5 50.3 50.1
+6: Table 8: Human citation quality evaluation vs. ALCE
+7: citation quality evaluation on ASQA.
+8: Human scores ALCE scores
+9: Rec. Prec. Rec. Prec.
+10: ChatGPT VANILLA 50.8 52.4 52.8 50.4
+11: w/ RERANK 59.7 60.6 63.0 60.6
+12: Vicuna-13B VANILLA 13.4 19.2 13.6 18.1
+13: Table 9: Human citation quality evaluation vs. ALCE
+14: citation quality evaluation on ELI5.
+15: to output fluent answers that are related to the ques-
+16: tion, despite differences in factual correctness.
+17: Our automatic evaluation of citation quality
+18: strongly correlates with human judgements. As
+19: shown in Table 8 (ASQA) and Table 9 (ELI5), the
+20: relative rankings induced by human and our auto-
+21: matic metrics are consistent. The absolute citation
+22: scores from human and ALCE are very close except
+23: for RERANK (which uses the automated citation
+24: recall for reranking). This suggests that an im-
+25: provement on ALCE citation metrics translates to
+26: improvement on human preferences. Furthermore,
+27: the Cohen’s kappa coefficient between human and
+28: ALCE suggests substantial agreement for citation
+29: recall (0.698) and moderate agreement for citation
+30: precision (0.525). We also show in §G.5 that our
+31: automatic evaluation achieves high accuracy when
+32: treating human annotations as gold labels (85.1%
+33: for citation recall and 77.6% for citation precision).
+34: 7 Related Work
+35: Evaluating citations. Generating text with ci-
+36: tations is closely related to attribution. Rashkin
+37: et al. (2023) define the “attributable to identified
+38: sources” (AIS) score to measure how faithful a gen-
+39: erated text is to its sources. Bohnet et al. (2022) ap-
+40: ply AIS scores on a single-document short-answer
+41: QA dataset. Honovich et al. (2022); Yue et al.
+42: (2023) study automatic evaluations for the AIS
+43: score. A concurrent work (Liu et al., 2023) conduct
+44: human evaluation on commercial generative search
+45: engines to examine their citation qualities.
+46: Scientific citation text generation (Funkquist
+47: et al., 2022) is a related task to ALCE where the
+48: model is provided the papers-to-cite and context
+49: and is required to recover the citing text. It is differ-
+50: ent from ALCE as all citations are provided and the
+51: model only needs to perform the summarization.
+52: Retrieval-augmented LMs. Many studies have ex-
+53: plored augmenting LMs with externally retrieved
+54: information. Guu et al. (2020); Borgeaud et al.
+55: (2022); Izacard et al. (2022) pre-train language
+56: models with retrieved passages, while Khandel-
+57: wal et al. (2020); Zhong et al. (2022) augment
+58: LLMs’ output by interpolating it with akNN mod-
+59: ule; though none of them explicitly provide cita-
+60: tions to the retrieved sources. Other works prompt
+61: or fine-tune LLMs to “retrieve on-the-fly” (Parisi
+62: et al., 2022; Schick et al., 2023; Shuster et al., 2022;
+63: Jiang et al., 2023; Yao et al., 2023; Press et al.,
+64: 2022), which offers flexibility of when and what to
+65: search. Gao et al. (2023); He et al. (2022) propose
+66: to first generate text without accessing external doc-
+67: uments and then retrieve relevant documents and
+68: revise the generation to be consistent.
+69: Among previous explorations, Nakano et al.
+70: (2021); Menick et al. (2022) are the closest to our
+71: setting, where LLMs are trained to answer ques-
+72: tions while providing citations. However, they do
+73: not explore retrieval strategies and simply use com-
+74: mercial search engines, which are not reproducible,
+75: and their models and training data are closed-
+76: source. To the best of our knowledge, we are the
+77: first to implement end-to-end systems that retrieve,
+78: synthesize, and cite documents with LLMs.
+79: 8 Conclusion
+80: We propose ALCE, the first automatic benchmark
+81: for evaluating LLM generations with citations. We
+82: deploy automatic metrics to measure fluency, cor-
+83: rectness, and citation quality, and verify their effi-
+84: cacy via human evaluation. We explore a variety of
+85: strategies for incorporating citations in LLMs and
+86: demonstrate that current systems have considerable
+87: room for improvement on ALCE.
+88: Our experiments highlight a number of promis-
+89: ing research directions, including (1) enhancing re-
+90: trieval and refining retrieval integrations in LLMs,
+91: (2) developing long-context LLMs, and (3) advanc-
+92: ing LLMs’ ability to synthesize multiple sources.
+93: What’s even more intriguing is that these research
+94: proposals extend beyond the ALCE setup (for ex-
+95: ample, long-context LLMs have numerous exciting
+96: applications), and ALCE can serve as a valuable
+97: testbed for their development.
+98: 6473
+
+SOURCE A-P17 physical PDF page 17
+1: Fluency Correct. Citation
+2: (MAUVE) (EM) Rec. Prec.
+3: ChatGPT(VANILLA)
+4: #demo = 0 74.5 41.9 69.3 73.4
+5: #demo = 1 68.9 39.8 74.6 73.2
+6: #demo = 2 66.6 40.4 73.6 72.5
+7: Table 16: Different demonstrations on ASQA.
+8: Fluency Correct. Citation
+9: (MAUVE) (EM Rec.) Rec. Prec.
+10: ChatGPT 66.6 40.4 73.6 72.5
+11: FiD + POSTCITE 75.8 28.4 58.1 58.0
+12: Table 17: Comparison of Fusion-in-Decoder with Chat-
+13: GPT on ASQA. Both models use top-5 GTR passages.
+14: G.5 More Human Evaluation
+15: We evaluate the accuracy of our automatic metrics
+16: by treating the human annotations as gold labels.
+17: For citation recall, ALCE achieves an accuracy of
+18: 85.1%; for citation precision, ALCE has an accu-
+19: racy of 77.6%. Regarding detecting insufficient
+20: citations, ALCE has a recall of 82.3% and a pre-
+21: cision of 84.2%; regarding detecting “irrelevant”
+22: citations, ALCE has a recall of 75.6% and a pre-
+23: cision of 66.1%—ALCE is effective in detecting
+24: “irrelevant” citations, but due to the limitation of
+25: the NLI model (cannot detect “partial support”), it
+26: has a relatively high false positive rate.
+27: G.6 Main Results
+28: We show full results of our experiments along with
+29: the standard deviation in Tables 19, 20, and 21. We
+30: repeat all experiments with three different random
+31: seeds. However, for ChatGPT RERANK , we use
+32: only one seeded run since each run repeats the
+33: generation step four times, and more experiments
+34: would incur significant costs.
+35: H Prompts
+36: We show detailed prompts used in our paper in
+37: Tables 23, 24, 25, 26, 27, 28, and 29.
+38: I Examples
+39: In Tables 30 and 31 we show some examples of
+40: questions and model generated outputs.
+41: Fluency Correct. Citation
+42: (MAUVE) (Claim) Rec. Prec.
+43: ChatGPT 57.2 12.0 51.1 50.0
+44: FiD + POSTCITE 25.2 4.4 39.3 39.3
+45: Table 18: Comparison of Fusion-in-Decoder with Chat-
+46: GPT on ELI5. Both models use top-5 GTR passages.
+47: 6481

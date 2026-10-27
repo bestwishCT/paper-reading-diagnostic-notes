@@ -1,0 +1,77 @@
+{
+  "decisions": [
+    {
+      "id": "D1",
+      "evidence": [
+        {
+          "source_id": "A-P17",
+          "start_line": 15,
+          "end_line": 23
+        },
+        {
+          "source_id": "A-P9",
+          "start_line": 31,
+          "end_line": 33
+        },
+        {
+          "source_id": "A-P8",
+          "start_line": 110,
+          "end_line": 116
+        }
+      ],
+      "answer": "证据映射（见上）：A-P17行15-23给出ALCE在将人工标注视为金标准时的性能数值；A-P9行31-33重复/补充了accuracy数值；A-P8行110-116定义了citation precision的判定规则。抄录原文数值并说明评估对象：\n- 两个“accuracy”：对人工标注为金标准时，ALCE对“citation recall”的accuracy = 85.1%；对“citation precision”的accuracy = 77.6%（A-P17行17-19；A-P9行31-33）。\n- 两类错误检测的recall/precision（均为ALCE对人工标注的检测性能）：检测“insufficient citations”（检测出不充分引用）的 recall = 82.3%，precision = 84.2%（A-P17行20-21）；检测“irrelevant”引用的 recall = 75.6%，precision = 66.1%（A-P17行22-23）。\n评估对象说明：这些数值衡量的是ALCE自动评价（基于NLI等自动模块）在把人工标注当作“金标签”时，分别在citation recall/precision以及两类错误（insufficient 与 irrelevant）检测上的表现。注：citation precision的判定采用文中定义——“每个引用若该句的citation recall为1且该引用至少‘部分支持’则计为1”（A-P8行110-116）。",
+      "limitations": "仅抄录并解释了文中给出的数字与定义；未扩展或重计算任何隐含计数，且所有说明均基于文中明示句子与数值。若要进一步拆解为绝对计数或其它指标，需额外原始标注表或样本量信息。"
+    },
+    {
+      "id": "D2",
+      "evidence": [
+        {
+          "source_id": "A-P8",
+          "start_line": 110,
+          "end_line": 116
+        },
+        {
+          "source_id": "A-P9",
+          "start_line": 27,
+          "end_line": 33
+        },
+        {
+          "source_id": "A-P17",
+          "start_line": 20,
+          "end_line": 23
+        }
+      ],
+      "answer": "证据映射（见上）：A-P8行110-116给出citation precision的定义；A-P9行27-33给出Cohen’s kappa与accuracy；A-P17行20-23给出irrelevant检测的recall/precision。区分如下（均以文中定义为准）：\n1) citation precision（文中定义的“每个引用”的precision）：按照A-P8行110-116，每个引用单元被赋予precision=1的条件是该句的citation recall=1且该引用至少“部分支持”该句。分母与计量单元：所有被评估的引用（per-citation）。\n2) 检测“irrelevant”的precision：A-P17行22-23给出的66.1%是ALCE在把人工标注当金标准时，对“irrelevant”类检测的precision。分母为ALCE判定为“irrelevant”的预测数（predicted irrelevant count）；分子为这些预测中被人工标注为irrelevant的真阳性数。与citation precision不同，二者的单位与分母不应混用（前者是按引用是否“至少部分支持”来打分的条目级指标，后者是针对“irrelevant”这一二分类检测的预测精度）。\n3) accuracy（A-P17行17-19、A-P9行31-33）：文中把人工注释视为金标准并计算ALCE在citation recall与citation precision上的总体accuracy（分别85.1%和77.6%）。这里的分母是全部被比对的判断实例（treated as gold labels），与上面两类precision的分母也不同。\n4) Cohen’s kappa（A-P9行27-29）：用于衡量人类与ALCE在citation recall/precision上的一致性（0.698和0.525分别对应recall和precision）。kappa是基于分类一致性概率的统计一致性指标，其分母与计算方式均与前述的precision/accuracy不同，因此不能把它与其它比率直接换算为相同的真阳性/假阳性计数。\n综上，不能把这些指标的分母混用：citation precision按引用计、irrelevant precision按预测的irrelevant计、accuracy按全部比对实例计、kappa按一致性概率计算，三者测量对象和分母框架不同。",
+      "limitations": "解释仅基于文中明示的定义与数值；文中未给出精确计数（TP/FP/TN/FN）或样本总数，因而无法把这些比率互相精确换算为绝对计数。"
+    },
+    {
+      "id": "D3",
+      "evidence": [
+        {
+          "source_id": "A-P17",
+          "start_line": 20,
+          "end_line": 23
+        }
+      ],
+      "answer": "证据映射（见上）：仅有文中给出的两项比率：对“irrelevant”检测的 recall = 75.6% 与 precision = 66.1%（A-P17行22-23）。能否反推出唯一混淆矩阵/样本量/在所有引用中“无关”（irrelevant）比例？结论：不能。理由如下：\n- 设真阳性TP=t，则 recall = TP/(TP+FN)=0.756 => TP+FN = t/0.756. precision = TP/(TP+FP)=0.661 => TP+FP = t/0.661. 由此可解出FN = t*(1/0.756 -1) ≈0.3228 t，FP = t*(1/0.661 -1) ≈0.5120 t。两式仅给出FN与FP相对于TP的比率，而无法決定TP的绝对值t。任一正数t都能生成满足这两比率的混淆矩阵（只要满足整数约束），因此混淆矩阵不是唯一的。 \n- 样本量（总引用数）仍无法确定：总样本 = TP+FN+TN+FP，需要TN或总体正负例数或先验无关比例才能解出。只有在已知其中一个绝对计数（例如TP或总样本或irrelevant的先验比例）时，才能唯一推出整张混淆矩阵。\n- 可以推出的仅是相对量：比如FN/FP的比值可由两率唯一确定（FN/FP = (1/recall -1)/(1/precision -1)），但这仅是比例信息，不等于绝对计数或样本量。\n因此，给出75.6%和66.1%本身不足以反推唯一混淆矩阵、样本量或在所有引用中无关的比例。",
+      "limitations": "推论仅基于文中给出的两项比率；若有额外的绝对计数（如TP或总样本数或正例/负例先验），则可进一步求解。A-P17同时指出自动检测受NLI限制影响（可能产生假阳性），这也会影响任何基于比率的外推（见A-P17行24-26）。"
+    },
+    {
+      "id": "D4",
+      "evidence": [
+        {
+          "source_id": "A-P17",
+          "start_line": 24,
+          "end_line": 26
+        },
+        {
+          "source_id": "A-P8",
+          "start_line": 110,
+          "end_line": 116
+        }
+      ],
+      "answer": "证据映射（见上）：A-P17行24-26说明NLI模型无法检测“partial support”并据此导致较高的false positive率；A-P8行110-116说明在人工标注标准下，若引用至少“部分支持”则视为正例。解释如下：\n- 方向：由于人工判定将“部分支持（partial support）”视为正（即对citation precision计为1的条件之一），但ALCE所用的NLI自动模块不能可靠识别“部分支持”，因此当引用实际上部分支持目标句时，NLI可能错误判断为“不支持/irrelevant”。这会导致ALCE在“irrelevant”检测任务上产生假阳性（即ALCE预测为irrelevant但人工标注并非irrelevant），从而降低自动检测的precision（正是A-P17中提到的高假阳性率，反映在irrelevant precision=66.1%）。\n- 适用范围与边界：该解释仅适用于ALCE所述的自动化检测流程（使用NLI等模型判定支持程度）以及文中用来验证的任务设置；它不意味着人工标注本身为有误或自动判定即是真值。文中也明确把人工标注作为金标准来评估ALCE（A-P17行15-19），并提醒NLI模型的局限性会引入系统性偏差（A-P17行24-26）。因此应谨慎解释自动标签——它们是模型产出的判断，而非无条件的真值。\n- 实务影响：当任务中存在大量“部分支持”的引用时，基于当前NLI的自动评估会系统性低估precision并产出较高的假阳性率；改进需依赖更能识别部分支持的自动判定方法或更多人工参与的标注/校验流程。",
+      "limitations": "结论严格依据文中对NLI模型局限性的描述；未提供NLI内部机制或定量对比细节，也未基于外部文献扩展论证。文中未提供对“部分支持”样本比例的量化，因此无法定量估计该偏差的整体影响规模。"
+    }
+  ]
+}

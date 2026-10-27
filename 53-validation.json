@@ -1,0 +1,70 @@
+{
+  "status": "ranges_valid",
+  "errors": [],
+  "semantic": "not_evaluated",
+  "excerpts": [
+    {
+      "decision": "D1",
+      "source_id": "A-P17",
+      "start_line": 15,
+      "end_line": 23,
+      "text": "We evaluate the accuracy of our automatic metrics\nby treating the human annotations as gold labels.\nFor citation recall, ALCE achieves an accuracy of\n85.1%; for citation precision, ALCE has an accu-\nracy of 77.6%. Regarding detecting insufficient\ncitations, ALCE has a recall of 82.3% and a pre-\ncision of 84.2%; regarding detecting “irrelevant”\ncitations, ALCE has a recall of 75.6% and a pre-\ncision of 66.1%—ALCE is effective in detecting"
+    },
+    {
+      "decision": "D1",
+      "source_id": "A-P9",
+      "start_line": 31,
+      "end_line": 33,
+      "text": "automatic evaluation achieves high accuracy when\ntreating human annotations as gold labels (85.1%\nfor citation recall and 77.6% for citation precision)."
+    },
+    {
+      "decision": "D1",
+      "source_id": "A-P8",
+      "start_line": 110,
+      "end_line": 116,
+      "text": "support the sentence; (3) citation precision: given\na sentence and one of its citations, the annotator\nis asked to judge whether the citation “fully sup-\nports”, “partially supports”, or “does not support”\nthe sentence. Each citation gets a precision score\n1 if the output sentence has a citation recall of 1\nand this citation at least “partially supports” it. See"
+    },
+    {
+      "decision": "D2",
+      "source_id": "A-P8",
+      "start_line": 110,
+      "end_line": 116,
+      "text": "support the sentence; (3) citation precision: given\na sentence and one of its citations, the annotator\nis asked to judge whether the citation “fully sup-\nports”, “partially supports”, or “does not support”\nthe sentence. Each citation gets a precision score\n1 if the output sentence has a citation recall of 1\nand this citation at least “partially supports” it. See"
+    },
+    {
+      "decision": "D2",
+      "source_id": "A-P9",
+      "start_line": 27,
+      "end_line": 33,
+      "text": "the Cohen’s kappa coefficient between human and\nALCE suggests substantial agreement for citation\nrecall (0.698) and moderate agreement for citation\nprecision (0.525). We also show in §G.5 that our\nautomatic evaluation achieves high accuracy when\ntreating human annotations as gold labels (85.1%\nfor citation recall and 77.6% for citation precision)."
+    },
+    {
+      "decision": "D2",
+      "source_id": "A-P17",
+      "start_line": 20,
+      "end_line": 23,
+      "text": "citations, ALCE has a recall of 82.3% and a pre-\ncision of 84.2%; regarding detecting “irrelevant”\ncitations, ALCE has a recall of 75.6% and a pre-\ncision of 66.1%—ALCE is effective in detecting"
+    },
+    {
+      "decision": "D3",
+      "source_id": "A-P17",
+      "start_line": 20,
+      "end_line": 23,
+      "text": "citations, ALCE has a recall of 82.3% and a pre-\ncision of 84.2%; regarding detecting “irrelevant”\ncitations, ALCE has a recall of 75.6% and a pre-\ncision of 66.1%—ALCE is effective in detecting"
+    },
+    {
+      "decision": "D4",
+      "source_id": "A-P17",
+      "start_line": 24,
+      "end_line": 26,
+      "text": "“irrelevant” citations, but due to the limitation of\nthe NLI model (cannot detect “partial support”), it\nhas a relatively high false positive rate."
+    },
+    {
+      "decision": "D4",
+      "source_id": "A-P8",
+      "start_line": 110,
+      "end_line": 116,
+      "text": "support the sentence; (3) citation precision: given\na sentence and one of its citations, the annotator\nis asked to judge whether the citation “fully sup-\nports”, “partially supports”, or “does not support”\nthe sentence. Each citation gets a precision score\n1 if the output sentence has a citation recall of 1\nand this citation at least “partially supports” it. See"
+    }
+  ]
+}
